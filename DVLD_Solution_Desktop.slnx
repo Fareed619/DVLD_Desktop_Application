@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="DVLD_BusinessLogicLayer/DVLD_BusinessLogicLayer.csproj" Id="91cbcfae-8fca-48ee-9013-c0e15c9e493b" />
+  <Project Path="DVLD_DataAccessLayer/DVLD_DataAccessLayer.csproj" Id="4a55bf0c-d9c6-4f07-ace1-d6d45b35195d" />
+  <Project Path="DVLD_PresentationLayer/DVLD_PresentationLayer.csproj" Id="0643aff1-aea1-4d89-9c56-c31ed3af966d" />
+  <Project Path="DVLD_SharedDTO/DVLD_SharedDTO.csproj" Id="841fab6b-b997-4398-bc1b-c93de3552666" />
+  <Project Path="DVLD_Testing/DVLD_Testing_Console.csproj" Id="bc925776-29be-49e1-a01d-787fffd057c8" />
+</Solution>
