@@ -42,7 +42,7 @@ namespace DVLD_PresentationLayer.Controls {
         }
 
         private void ctrlPersonInformation_Load(object sender, EventArgs e) {
-            _SetDefaultInfo();
+            SetDefaultInfo();
         }
 
         public void LoadPersonInfo(int ID) {
@@ -51,7 +51,7 @@ namespace DVLD_PresentationLayer.Controls {
             _Person = clsPerson.Find(_PersonID);
 
             if (_Person == null) {
-                _SetDefaultInfo();
+                SetDefaultInfo();
                 MessageBox.Show("Person is not found");
                 return;
             }
@@ -150,7 +150,7 @@ namespace DVLD_PresentationLayer.Controls {
 
         }
 
-        private void _SetDefaultInfo() {
+        public void SetDefaultInfo() {
 
             _PersonID = -1;
 

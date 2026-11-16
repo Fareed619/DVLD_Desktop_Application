@@ -23,23 +23,17 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.ctrlPersonInformation1 = new DVLD_PresentationLayer.Controls.ctrlPersonInformation();
             this.gbFilter = new System.Windows.Forms.GroupBox();
             this.btnAddNew = new System.Windows.Forms.Button();
             this.btnSearch = new System.Windows.Forms.Button();
             this.cbFilterBy = new System.Windows.Forms.ComboBox();
             this.txtFilterValue = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.ctrlPersonInformation1 = new DVLD_PresentationLayer.Controls.ctrlPersonInformation();
             this.gbFilter.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // ctrlPersonInformation1
-            // 
-            this.ctrlPersonInformation1.AutoSize = true;
-            this.ctrlPersonInformation1.Location = new System.Drawing.Point(35, 173);
-            this.ctrlPersonInformation1.Name = "ctrlPersonInformation1";
-            this.ctrlPersonInformation1.Size = new System.Drawing.Size(982, 290);
-            this.ctrlPersonInformation1.TabIndex = 0;
             // 
             // gbFilter
             // 
@@ -49,9 +43,9 @@
             this.gbFilter.Controls.Add(this.txtFilterValue);
             this.gbFilter.Controls.Add(this.label1);
             this.gbFilter.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbFilter.Location = new System.Drawing.Point(35, 42);
+            this.gbFilter.Location = new System.Drawing.Point(28, 42);
             this.gbFilter.Name = "gbFilter";
-            this.gbFilter.Size = new System.Drawing.Size(982, 85);
+            this.gbFilter.Size = new System.Drawing.Size(1013, 85);
             this.gbFilter.TabIndex = 1;
             this.gbFilter.TabStop = false;
             this.gbFilter.Text = "Filter";
@@ -88,6 +82,7 @@
             this.cbFilterBy.Name = "cbFilterBy";
             this.cbFilterBy.Size = new System.Drawing.Size(193, 30);
             this.cbFilterBy.TabIndex = 2;
+            this.cbFilterBy.SelectedIndexChanged += new System.EventHandler(this.cbFilterBy_SelectedIndexChanged);
             // 
             // txtFilterValue
             // 
@@ -107,19 +102,39 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Find By : ";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.ctrlPersonInformation1);
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.Location = new System.Drawing.Point(28, 162);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(1013, 322);
+            this.groupBox1.TabIndex = 2;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Person Info";
+            // 
+            // ctrlPersonInformation1
+            // 
+            this.ctrlPersonInformation1.AutoSize = true;
+            this.ctrlPersonInformation1.Location = new System.Drawing.Point(6, 21);
+            this.ctrlPersonInformation1.Name = "ctrlPersonInformation1";
+            this.ctrlPersonInformation1.Size = new System.Drawing.Size(1001, 290);
+            this.ctrlPersonInformation1.TabIndex = 0;
+            // 
             // ctrlPersonCardWithFilter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.gbFilter);
-            this.Controls.Add(this.ctrlPersonInformation1);
             this.Name = "ctrlPersonCardWithFilter";
             this.Size = new System.Drawing.Size(1062, 509);
             this.Load += new System.EventHandler(this.ctrlPersonCardWithFilter_Load);
             this.gbFilter.ResumeLayout(false);
             this.gbFilter.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -132,5 +147,6 @@
         private System.Windows.Forms.ComboBox cbFilterBy;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Button btnAddNew;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }

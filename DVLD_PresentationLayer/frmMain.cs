@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DVLD_PresentationLayer.Login;
+using DVLD_PresentationLayer.Users;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,14 +14,22 @@ namespace DVLD_PresentationLayer
 {
     public partial class frmMain : Form {
 
-        public frmMain() {
+        private frmLogin _FrmLogin;
+
+        public frmMain(frmLogin LoginForm) {
 
             InitializeComponent();
+
+            _FrmLogin = LoginForm;
         }
 
-       private void MainForm_Load(object sender, EventArgs e) {
+        private void MainForm_Load(object sender, EventArgs e) {
 
           
+        }
+
+        private void frmMain_FormClosed(object sender, FormClosedEventArgs e) {
+            _FrmLogin.Close();
         }
 
         private void applicationstoolStripMenuItem_Click(object sender, EventArgs e){
@@ -45,8 +55,31 @@ namespace DVLD_PresentationLayer
         }
 
         private void accountSettingsToolStripMenuItem_Click(object sender, EventArgs e) {
-            frmSettings frm = new frmSettings();
-            frm.ShowDialog();
+            //frmSettings frm = new frmSettings();
+            //frm.ShowDialog();
+        }
+
+        private void signOutToolStripMenuItem_Click(object sender, EventArgs e) {
+
+            clsCurrentUser.UserLoginInfo = null;
+
+            this.Hide();
+            _FrmLogin.Show();
+           
+        }
+
+        private void currentUserInfoToolStripMenuItem_Click(object sender, EventArgs e) {
+            int UserID = clsCurrentUser.UserLoginInfo.User.UserID;
+
+            frmShowUserDetails UserDetails = new frmShowUserDetails(UserID);
+            UserDetails.ShowDialog();
+        }
+
+        private void changePasswordToolStripMenuItem_Click(object sender, EventArgs e) {
+            int UserID = clsCurrentUser.UserLoginInfo.User.UserID;
+
+            frmChangePassword ChangePassword = new frmChangePassword(UserID);
+            ChangePassword.ShowDialog();
         }
     }
 }

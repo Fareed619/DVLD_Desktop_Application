@@ -6,6 +6,8 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
+
 
 namespace DVLD_BusinessLogicLayer {
 
@@ -59,7 +61,7 @@ namespace DVLD_BusinessLogicLayer {
         private clsUser(int userID, int personID, string username, string password, bool isActive) {
 
             this.UserID = userID;
-            this.PersonID = PersonID;
+            this.PersonID = personID;
             this.UserName = username;
             this.Password = password;
             this.IsActive = isActive;
@@ -79,13 +81,38 @@ namespace DVLD_BusinessLogicLayer {
             return MapUserDTOToUser(UserDTO);
         }
 
+        static public clsUser Find(string username) {
+
+            clsUserDTO UserDTO = clsUserData.Find(username);
+
+            if (UserDTO == null) {
+                return null;
+            }
+
+            return MapUserDTOToUser(UserDTO);
+        }
+
+
+        static public bool DoesPersonExist(int PersonID) {
+
+            return clsUserData.DoesPersonExistInUsersTable(PersonID);
+        }
+
         static public DataTable ListUsers() {
 
             return clsUserData.ListUsers();
 
         }
 
+        static public bool DeleteUser(int ID) {
+
+            return clsUserData.DeleteUser(ID);
+        }
+
         private bool _AddNewUser() {
+
+            this.Password = clsPasswordHelper.HashPassword(this.Password);
+           
 
             int ID = clsUserData.AddUser(MapUserToUserDTO(this));
 
@@ -119,7 +146,38 @@ namespace DVLD_BusinessLogicLayer {
             return false;
         }
 
+        public bool ChangePassword(string OldPassword, string NewPassword) {
 
+            //var sw = Stopwatch.StartNew();
+
+
+            // 1 - hash the old password and verify if it matches the stored hash.
+            bool DoesMatch = clsPasswordHelper.VerifyPassword(OldPassword, this.Password);
+            if (!DoesMatch) return false;
+           
+
+            //sw.Stop();
+            //Debug.WriteLine($"Verification: {sw.ElapsedMilliseconds} ms");
+            //sw.Restart();
+
+
+            // 2 - hash the new password and store it in database
+            string NewHash = clsPasswordHelper.HashPassword(NewPassword);
+
+            //sw.Stop();
+            //Debug.WriteLine($"New password hashing: {sw.ElapsedMilliseconds} ms");
+
+            // 3 -  Save it
+            if( clsUserData.ChangePassword(NewHash, this.UserID)) {
+                this.Password = NewHash;
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        
 
 
     }

@@ -69,11 +69,38 @@ namespace DVLD_PresentationLayer.People.Controls {
             InitializeComponent();
         }
 
+
+        private void ctrlPersonCardWithFilter_Load(object sender, EventArgs e) {
+
+            cbFilterBy.Items.Add("None");
+            cbFilterBy.Items.Add("Person ID");
+            cbFilterBy.Items.Add("National No.");
+
+            cbFilterBy.SelectedIndex = 0;
+
+
+            groupBox1.Font = new Font("Microsoft Sans Serif", 12, FontStyle.Bold);
+            gbFilter.Font = new Font("Microsoft Sans Serif", 12, FontStyle.Bold);
+            ctrlPersonInformation1.Font = new Font("Microsoft Sans Serif", 8, FontStyle.Regular);
+
+
+
+        }
+
         public void LoadPersonInfo(int personID) {
 
             cbFilterBy.SelectedItem = "Person ID";
-            txtFilterValue.Text = PersonID.ToString();
+            txtFilterValue.Text = personID.ToString();
+            gbFilter.Enabled = false;
+
             FindPerson();
+        }
+
+        public void ResetPersonInfo() {
+
+            //cbFilterBy.SelectedIndex = 0;
+            txtFilterValue.Text = "";
+            ctrlPersonInformation1.SetDefaultInfo();
         }
 
         private void FindPerson() {
@@ -107,25 +134,15 @@ namespace DVLD_PresentationLayer.People.Controls {
 
         }
 
-        private void ctrlPersonCardWithFilter_Load(object sender, EventArgs e) {
-
-            cbFilterBy.Items.Add("None");
-            cbFilterBy.Items.Add("Person ID");
-            cbFilterBy.Items.Add("National No.");
-
-            cbFilterBy.SelectedIndex = 0;
-
-           
-
-
-        }
 
         private void PersonSavedHandler(int PersonID) {
 
             ctrlPersonInformation1.LoadPersonInfo(PersonID);
+            cbFilterBy.SelectedItem = "Person ID";
+            txtFilterValue.Text = PersonID.ToString();
 
-            if (ctrlPersonInformation1.PersonID != -1) {
-                OnPersonSelected(ctrlPersonInformation1.PersonID);
+            if (PersonID != -1) {
+                OnPersonSelected(PersonID);
             }
         }
 
@@ -143,11 +160,12 @@ namespace DVLD_PresentationLayer.People.Controls {
             frmAddPerson.PersonSaved += PersonSavedHandler;
 
             frmAddPerson.ShowDialog();
-
-            cbFilterBy.SelectedItem = "None";
-            txtFilterValue.Text = string.Empty;
         }
 
-
+        private void cbFilterBy_SelectedIndexChanged(object sender, EventArgs e) {
+            if(cbFilterBy.SelectedIndex != 0) {
+                txtFilterValue.Focus();
+            }
+        }
     }
 }

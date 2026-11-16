@@ -180,6 +180,10 @@ namespace DVLD_PresentationLayer.Controls {
         }
 
         private string SaveImageInFolder(string SourcePath) {
+            
+            if(SourcePath.Trim() == string.Empty) {
+                return string.Empty;
+            }
 
             string DestinationFolder = @"C:\Users\User\Desktop\FareedDVLD\ProfileImages\";
 
