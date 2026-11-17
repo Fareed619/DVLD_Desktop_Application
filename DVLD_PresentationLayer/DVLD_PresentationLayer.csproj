@@ -50,7 +50,7 @@
   <ItemGroup>
     <Compile Include="Classes\clsUtils.cs" />
     <Compile Include="Classes\clsValidation.cs" />
-    <Compile Include="Login\clsCurrentUser.cs" />
+    <Compile Include="clsGlobal.cs" />
     <Compile Include="Login\frmLogin.cs">
       <SubType>Form</SubType>
     </Compile>

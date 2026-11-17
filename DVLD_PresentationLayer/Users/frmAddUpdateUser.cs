@@ -67,6 +67,10 @@ namespace DVLD_PresentationLayer.Users {
                 lblMain.Text = "Add New User";
                 txtUsername.Focus();
                 btnNext.Enabled = false;
+                btnSave.Enabled = false;
+                
+
+
             }
             else {
 
@@ -116,6 +120,36 @@ namespace DVLD_PresentationLayer.Users {
             }
 
         }
+
+        private bool _DoPasswordsMatch(Control Password, Control ConfirmPassword, CancelEventArgs e) {
+
+            if (Password.Text.Trim() != ConfirmPassword.Text.Trim()) {
+                e.Cancel = true;
+                _SetErrorProvider(txtConfirmPass, "Confirm Password doesn't match the password");
+                return false;
+            }
+            else {
+                _SetErrorProvider(txtConfirmPass, string.Empty);
+                return true;
+            }
+
+        }
+
+        private bool _IsUsernameUnique(Control userNameControl, CancelEventArgs e) {
+
+            bool Exists = clsUser.DoesUserNameExist(userNameControl.Text.Trim());
+
+            if (Exists) {
+                e.Cancel = true;
+                _SetErrorProvider(txtUsername, "UserName already Exists, Please Pick another one");
+                return false;
+            }
+            else {
+                _SetErrorProvider(txtUsername, "");
+                return true;
+            }
+        }
+
 
         private void _SetUpdateMode() {
 
@@ -187,7 +221,11 @@ namespace DVLD_PresentationLayer.Users {
 
         private void txtUsername_Validating(object sender, CancelEventArgs e) {
 
-            _IsControlRequired(txtUsername, e);
+            bool Error = _IsControlRequired(txtUsername, e);
+            if (!Error) return;
+
+            // Check uniquniss
+            _IsUsernameUnique(txtUsername, e);
         }
 
         private void txtPassword_Validating(object sender, CancelEventArgs e) {
@@ -197,22 +235,22 @@ namespace DVLD_PresentationLayer.Users {
         }
 
         private void txtConfirmPass_Validating(object sender, CancelEventArgs e) {
+
             if (this._Mode == enMode.Update) return;
 
-            _IsControlRequired(txtConfirmPass, e);
-            if(txtConfirmPass.Text.Trim() != txtPassword.Text.Trim()) {
-                _SetErrorProvider(txtConfirmPass, "Password Confimration doesn't match the password");
-            }
-            else {
-                _SetErrorProvider(txtConfirmPass, string.Empty);
-            }
+            bool Error = _IsControlRequired(txtConfirmPass, e);
+            if (!Error) return;
+
+            _DoPasswordsMatch(txtPassword, txtConfirmPass, e);
 
         }
 
 
 
         private void btnNext_Click(object sender, EventArgs e) {
+            btnSave.Enabled = true;
             tabControl.SelectedTab = tabPageLoginInfo;
+
         }
 
         private void btnClose_Click(object sender, EventArgs e) {

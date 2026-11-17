@@ -133,6 +133,50 @@ namespace DVLD_DataAccessLayer {
 
         }
 
+        static public clsUserDTO FindUserByPersonID(int PersonID) {
+
+            clsUserDTO User = null;
+
+            SqlConnection Connection = new SqlConnection(clsSettings.ConnectionString);
+
+            string query = "SELECT * FROM Users WHERE PersonID = @PersonID;";
+
+            SqlCommand Command = new SqlCommand(query, Connection);
+
+            Command.Parameters.AddWithValue("@PersonID", PersonID);
+
+
+
+            try {
+                Connection.Open();
+
+                SqlDataReader reader = Command.ExecuteReader();
+
+                if (reader.Read()) {
+
+                    User = new clsUserDTO(
+                        userID: (int)reader["UserID"],
+                        personID: (int)reader["PersonID"],
+                        username: (string)reader["UserName"],
+                        password: (string)reader["Password"],
+                        isActive: (bool)reader["IsActive"]
+                    );
+                }
+
+                reader.Close();
+            }
+            catch (Exception Ex) {
+                User = null;
+
+            }
+            finally {
+                Connection.Close();
+            }
+
+            return User;
+
+        }
+
         static public int AddUser(clsUserDTO User) {
 
             int UserID = -1;
@@ -315,6 +359,82 @@ namespace DVLD_DataAccessLayer {
             }
 
             return isFound;
+        }
+
+        static public bool DoesUserExists(int UserID) {
+
+            bool isFound = false;
+
+            SqlConnection Connection = new SqlConnection(clsSettings.ConnectionString);
+
+            string query = "SELECT 1 FROM Users WHERE UserID = @UserID;";
+
+            SqlCommand Command = new SqlCommand(query, Connection);
+
+            Command.Parameters.AddWithValue("@UserID", UserID);
+
+            try {
+                Connection.Open();
+
+                object res = Command.ExecuteScalar();
+
+                if (res == null) {
+                    isFound = false;
+                }
+                else {
+                    isFound = true;
+                }
+
+
+            }
+            catch (Exception Ex) {
+                isFound = false;
+
+            }
+            finally {
+                Connection.Close();
+            }
+
+            return isFound;
+
+        }
+
+        static public bool DoesUserNameExist(string UserName) {
+
+            bool isFound = false;
+
+            SqlConnection Connection = new SqlConnection(clsSettings.ConnectionString);
+
+            string query = "SELECT 1 FROM Users WHERE UserName = @UserName;";
+
+            SqlCommand Command = new SqlCommand(query, Connection);
+
+            Command.Parameters.AddWithValue("@UserName", UserName);
+
+            try {
+                Connection.Open();
+
+                object res = Command.ExecuteScalar();
+
+                if (res == null) {
+                    isFound = false;
+                }
+                else {
+                    isFound = true;
+                }
+
+
+            }
+            catch (Exception Ex) {
+                isFound = false;
+
+            }
+            finally {
+                Connection.Close();
+            }
+
+            return isFound;
+
         }
     }
 

@@ -51,26 +51,31 @@ namespace DVLD_PresentationLayer {
         }
 
         private void _SetDGVSettings() {
-            dgvUsers.Columns[0].Width = 100;
-            dgvUsers.Columns[0].HeaderText = "User ID";
 
-            dgvUsers.Columns[1].Width = 100;
-            dgvUsers.Columns[1].HeaderText = "Person ID";
+            if(RecordsCount > 0) {
+                dgvUsers.Columns[0].Width = 100;
+                dgvUsers.Columns[0].HeaderText = "User ID";
 
-            dgvUsers.Columns[2].Width = 220;
-            dgvUsers.Columns[2].HeaderText = "Full Name";
+                dgvUsers.Columns[1].Width = 100;
+                dgvUsers.Columns[1].HeaderText = "Person ID";
 
-            dgvUsers.Columns[3].Width = 100;
-            dgvUsers.Columns[3].HeaderText = "User Name";
+                dgvUsers.Columns[2].Width = 220;
+                dgvUsers.Columns[2].HeaderText = "Full Name";
 
-
-            dgvUsers.Columns[4].Width = 100;
-            dgvUsers.Columns[4].HeaderText = "Is Active";
+                dgvUsers.Columns[3].Width = 100;
+                dgvUsers.Columns[3].HeaderText = "User Name";
 
 
-            // Font 
-            dgvUsers.ColumnHeadersDefaultCellStyle.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold);
-            dgvUsers.RowsDefaultCellStyle.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular);
+                dgvUsers.Columns[4].Width = 100;
+                dgvUsers.Columns[4].HeaderText = "Is Active";
+
+
+                // Font 
+                dgvUsers.ColumnHeadersDefaultCellStyle.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold);
+                dgvUsers.RowsDefaultCellStyle.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular);
+
+            }
+           
         }
 
         private void _AddItemsTocomboBoxFilter() {
@@ -92,26 +97,25 @@ namespace DVLD_PresentationLayer {
         }
 
         // Filter Section
-
         private void _FilterUser(string FilterColumn, string FilterValue) {
 
-            if (FilterColumn == "Person ID") {
+            switch (FilterColumn) {
 
-                _FilterNubmer("PersonID", textBoxFilter.Text.Trim());
+                case "Person ID":
+                    _FilterNubmer("PersonID", textBoxFilter.Text.Trim());
+                    break;
 
-            }
-            else if (FilterColumn == "User ID") {
+                case "User ID":
+                    _FilterNubmer("UserID", textBoxFilter.Text.Trim());
+                    break;
 
-                _FilterNubmer("UserID", textBoxFilter.Text.Trim());
+                case "Full Name":
+                    _FilterString("FullName", textBoxFilter.Text.Trim());
+                    break;
 
-            }
-            else if (FilterColumn == "Full Name") {
-
-                _FilterString("FullName", textBoxFilter.Text.Trim());
-
-            }
-            else {
-                _FilterString("UserName", textBoxFilter.Text.Trim());
+                default:
+                    _FilterString("UserName", textBoxFilter.Text.Trim());
+                    break;
             }
 
         }
@@ -156,7 +160,7 @@ namespace DVLD_PresentationLayer {
         }
 
 
-        // Context Menu stripe Events
+        
         private void addUserToolStripMenuItem_Click(object sender, EventArgs e) {
             frmAddUpdateUser frmaddUser = new frmAddUpdateUser();
             frmaddUser.UserAddedUpdated += FrmAddUpdateUser_UserAddedUpdated;
@@ -180,15 +184,15 @@ namespace DVLD_PresentationLayer {
 
                 if (clsUser.DeleteUser(userId)) {
                     _LoadUsersIntoDataGridView();
-                    MessageBox.Show("User Has been deleted Successfully");
+                    MessageBox.Show("User Has been deleted Successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else {
-                    MessageBox.Show("Deleting has been Failed");
+                    MessageBox.Show("Deleting has been Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 }
             }
             else {
-                MessageBox.Show("Deleting Process has been Canceld");
+                MessageBox.Show("Deleting Process has been Canceld", "Cancelation", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
 
 
@@ -229,11 +233,40 @@ namespace DVLD_PresentationLayer {
             else {
                 textBoxFilter.Visible = false;
                 cbIsActiveFilter.Visible = false;
+                _ResetFilter();
             }
 
         }
 
-        // ********* End **********
+        private void textBoxFilter_TextChanged(object sender, EventArgs e) {
+            _FilterUser(comboBoxFilter.SelectedItem.ToString(), textBoxFilter.Text.Trim());
+        }
+
+        private void cbIsActiveFilter_SelectedIndexChanged(object sender, EventArgs e) {
+
+            switch (cbIsActiveFilter.SelectedIndex) {
+                case 1:
+                    _FilterBoolean("IsActive", 1);
+                    break;
+
+                case 2:
+                    _FilterBoolean("IsActive", 0);
+                    break;
+
+                default:
+                    _ResetFilter();
+                    break;
+            }
+
+        }
+
+        private void textBoxFilter_KeyPress(object sender, KeyPressEventArgs e) {
+            if ((comboBoxFilter.SelectedIndex == 1 || comboBoxFilter.SelectedIndex == 2) && !char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar)) {
+                e.Handled = true;//Block the character
+            }
+        }
+
+        
 
 
         // General Events 
@@ -247,38 +280,15 @@ namespace DVLD_PresentationLayer {
             frmaddUser.ShowDialog();
         }
 
-        private void cbIsActiveFilter_SelectedIndexChanged(object sender, EventArgs e) {
-
-            if (cbIsActiveFilter.SelectedIndex == 1) {
-                _FilterBoolean("IsActive", 1);
-            }
-            else if (cbIsActiveFilter.SelectedIndex == 2) {
-                _FilterBoolean("IsActive", 0);
-            }
-            else {
-                _ResetFilter();
-            }
-            
-        }
-
-        private void textBoxFilter_TextChanged(object sender, EventArgs e) {
-            _FilterUser(comboBoxFilter.SelectedItem.ToString(), textBoxFilter.Text.Trim());
-        }
-
         private void dgvUsers_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e) {
             lblRecords.Text = $"# {RecordsCount.ToString()} Records ";
         }
-
-     
-
-        private void textBoxFilter_KeyPress(object sender, KeyPressEventArgs e) {
-            if ((comboBoxFilter.SelectedIndex == 1 || comboBoxFilter.SelectedIndex == 2) && !char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar)) {
-                e.Handled = true;//Block the character
-            }
-        }
-
-
         // ********* End **********
+
+    
+      
+
+
 
     }
 }

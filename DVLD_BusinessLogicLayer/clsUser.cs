@@ -45,6 +45,7 @@ namespace DVLD_BusinessLogicLayer {
         public string UserName { get; set; }
         public string Password { get; set; }
         public bool IsActive { get; set; }
+        public clsPerson PersonInfo;
 
 
         public clsUser() {
@@ -53,7 +54,7 @@ namespace DVLD_BusinessLogicLayer {
             this.PersonID = -1;
             this.UserName = string.Empty;
             this.Password = string.Empty;
-            this.IsActive = false;
+            this.IsActive = true;
 
             this._Mode = enMode.AddNew;
         }
@@ -65,6 +66,7 @@ namespace DVLD_BusinessLogicLayer {
             this.UserName = username;
             this.Password = password;
             this.IsActive = isActive;
+            this.PersonInfo = clsPerson.Find(personID);
 
             this._Mode = enMode.Update;
         }
@@ -92,10 +94,30 @@ namespace DVLD_BusinessLogicLayer {
             return MapUserDTOToUser(UserDTO);
         }
 
+        static public clsUser FindUserByPersonID(int personID) {
+
+            clsUserDTO UserDTO = clsUserData.FindUserByPersonID(personID);
+
+            if (UserDTO == null) {
+                return null;
+            }
+
+            return MapUserDTOToUser(UserDTO);
+        }
+
 
         static public bool DoesPersonExist(int PersonID) {
 
             return clsUserData.DoesPersonExistInUsersTable(PersonID);
+        }
+
+        static public bool DoesUserExist(int userID) {
+            return clsUserData.DoesUserExists(userID);
+        }
+
+        static public bool DoesUserNameExist(string userName) {
+
+            return clsUserData.DoesUserNameExist(userName);
         }
 
         static public DataTable ListUsers() {
@@ -146,14 +168,17 @@ namespace DVLD_BusinessLogicLayer {
             return false;
         }
 
-        public bool ChangePassword(string OldPassword, string NewPassword) {
+        public bool ChangePassword(string OldPassword, string NewPassword, ref string ErrorMessage) {
 
             //var sw = Stopwatch.StartNew();
 
 
             // 1 - hash the old password and verify if it matches the stored hash.
             bool DoesMatch = clsPasswordHelper.VerifyPassword(OldPassword, this.Password);
-            if (!DoesMatch) return false;
+            if (!DoesMatch) {
+                ErrorMessage = "Current Password Deosn't match the stroed one";
+                return false;
+            };
            
 
             //sw.Stop();
@@ -170,9 +195,11 @@ namespace DVLD_BusinessLogicLayer {
             // 3 -  Save it
             if( clsUserData.ChangePassword(NewHash, this.UserID)) {
                 this.Password = NewHash;
+                ErrorMessage = string.Empty;
                 return true;
             }
             else {
+                ErrorMessage = "Unexpected error while changing password";
                 return false;
             }
         }

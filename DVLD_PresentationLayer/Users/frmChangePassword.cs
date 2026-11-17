@@ -22,34 +22,55 @@ namespace DVLD_PresentationLayer.Users {
         }
 
         private void frmChangePassword_Load(object sender, EventArgs e) {
+            _ResetDefaultValues();
+
             _User = clsUser.Find(_UserID);
+
+            if(_User == null) {
+                MessageBox.Show("User Is not Found", "Missing", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+                return;
+            }
 
             ctrlUserInformation1.LoadUserInformation(_UserID);
             txtCurrentPass.Focus();
         }
 
 
+        private void _ResetDefaultValues() {
+            ctrlUserInformation1.ResetUserInformation();
 
-        private void _CheckIsRequired(Control ctrl, string Message) {
+            txtCurrentPass.Text = "";
+            txtNewPass.Text = "";
+            txtConfirmPass.Text = "";
+        }
+
+        private bool _CheckIsRequired(Control ctrl, string Message, CancelEventArgs e) {
 
             if (string.IsNullOrEmpty(ctrl.Text.Trim())) {
 
+                e.Cancel = true;
                 errorProvider1.SetError(ctrl, Message);
+                return false;
             }
             else {
                 errorProvider1.SetError(ctrl, string.Empty);
+                return true;
 
             }
         }
 
-        private void _CheckPasswordsMatch(Control Password, Control ConfirmPassword) {
+        private bool _CheckPasswordsMatch(Control Password, Control ConfirmPassword, CancelEventArgs e) {
 
             if (Password.Text.Trim() != ConfirmPassword.Text.Trim()) {
 
+                e.Cancel = true;
                 errorProvider1.SetError(ConfirmPassword, "Confirm Passwor Doesn't match the password");
+                return false;
             }
             else {
                 errorProvider1.SetError(ConfirmPassword, string.Empty);
+                return true;
             }
 
         }
@@ -66,13 +87,15 @@ namespace DVLD_PresentationLayer.Users {
             string CurrentPassword = txtCurrentPass.Text.Trim();
             string NewPassword = txtNewPass.Text.Trim();
 
-            if (_User.ChangePassword(CurrentPassword, NewPassword)) { 
+            string ErrorMessage = "";
+
+            if (_User.ChangePassword(CurrentPassword, NewPassword, ref ErrorMessage)) { 
                 MessageBox.Show("Passowrd has been changed successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 this.Close();
             }
             else {
-                MessageBox.Show("Changing password has been Failed", "Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ErrorMessage, "Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             
@@ -88,20 +111,22 @@ namespace DVLD_PresentationLayer.Users {
 
         private void txtCurrentPass_Validating(object sender, CancelEventArgs e) {
 
-            _CheckIsRequired(txtCurrentPass, "Current Password is REQUIRED");
+            _CheckIsRequired(txtCurrentPass, "Current Password is REQUIRED", e);
         }
 
         private void txtNewPass_Validating(object sender, CancelEventArgs e) {
 
-            _CheckIsRequired(txtNewPass, "New Password is REQUIRED");
+            _CheckIsRequired(txtNewPass, "New Password is REQUIRED", e);
 
         }
 
         private void txtConfirmPass_Validating(object sender, CancelEventArgs e) {
 
-            _CheckIsRequired(txtConfirmPass, "Confirm Password is REQUIRED");
-            _CheckPasswordsMatch(txtNewPass, txtConfirmPass);
+            if (!_CheckIsRequired(txtConfirmPass, "Confirm Password is REQUIRED", e)) return;
+
+            _CheckPasswordsMatch(txtNewPass, txtConfirmPass, e);
 
         }
+
     }
 }

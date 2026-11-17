@@ -20,13 +20,6 @@ namespace DVLD_PresentationLayer
 
             frmLogin loginForm = new frmLogin();
 
-            //if(loginForm.ShowDialog() == DialogResult.OK) {
-            //    Application.Run(new frmMain());
-            //}
-            //else {
-            //    Application.Exit();
-            //}
-
             Application.Run(loginForm);
         }
     }

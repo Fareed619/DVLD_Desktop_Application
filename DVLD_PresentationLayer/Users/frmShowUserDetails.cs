@@ -23,5 +23,9 @@ namespace DVLD_PresentationLayer.Users {
         private void frmShowUserDetails_Load(object sender, EventArgs e) {
             ctrlUserInformation1.LoadUserInformation(_UserID);
         }
+
+        private void btnClose_Click(object sender, EventArgs e) {
+            this.Close();
+        }
     }
 }

@@ -197,6 +197,7 @@
             this.Controls.Add(this.txtNewPass);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.ctrlUserInformation1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "frmChangePassword";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Change Password";

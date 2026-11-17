@@ -50,7 +50,7 @@ namespace DVLD_BusinessLogicLayer {
 
             // 4 - Check the user's activeniss
             if (!this.User.IsActive) {
-                ErrorMessage = "User Is non-Active";
+                ErrorMessage = "Your Account is not Active, Please Contact Your Admin!";
                 this.IsLoggedIn = false;
                 return false;
             }

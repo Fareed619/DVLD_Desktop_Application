@@ -189,6 +189,7 @@
             this.txtConfirmPass.PasswordChar = '*';
             this.txtConfirmPass.Size = new System.Drawing.Size(166, 30);
             this.txtConfirmPass.TabIndex = 2;
+            this.txtConfirmPass.Tag = "Confirm Password";
             this.txtConfirmPass.Validating += new System.ComponentModel.CancelEventHandler(this.txtConfirmPass_Validating);
             // 
             // lblConfirmPassName
@@ -210,6 +211,7 @@
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(166, 30);
             this.txtPassword.TabIndex = 1;
+            this.txtPassword.Tag = "Password";
             this.txtPassword.Validating += new System.ComponentModel.CancelEventHandler(this.txtPassword_Validating);
             // 
             // label4
@@ -230,6 +232,7 @@
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.Size = new System.Drawing.Size(166, 30);
             this.txtUsername.TabIndex = 0;
+            this.txtUsername.Tag = "UserName";
             this.txtUsername.Validating += new System.ComponentModel.CancelEventHandler(this.txtUsername_Validating);
             // 
             // label3

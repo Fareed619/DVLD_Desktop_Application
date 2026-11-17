@@ -24,14 +24,14 @@ namespace DVLD_PresentationLayer.Users.Controls {
 
         public void LoadUserInformation(int userID) {
 
-            clsUser User = clsUser.Find(userID);
+            _User = clsUser.Find(userID);
 
-            if(User == null) {
-                MessageBox.Show("User is not found");
+            if(_User == null) {
+                ResetUserInformation();
+                MessageBox.Show($"User with User ID: {userID} is not found");
                 return;
             }
 
-            _User = User;
 
             // Load Info
             ctrlPersonInformation1.LoadPersonInfo(_User.PersonID);
@@ -40,6 +40,15 @@ namespace DVLD_PresentationLayer.Users.Controls {
             lblUserName.Text = _User.UserName;
             lblIsActive.Text = _User.IsActive ? "Yes" : "No";
 
+        }
+
+        public void ResetUserInformation() {
+
+            ctrlPersonInformation1.SetDefaultInfo();
+
+            lblUserID.Text = "";
+            lblUserName.Text ="";
+            lblIsActive.Text = "";
         }
     }
 }

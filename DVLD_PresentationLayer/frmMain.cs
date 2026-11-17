@@ -23,14 +23,6 @@ namespace DVLD_PresentationLayer
             _FrmLogin = LoginForm;
         }
 
-        private void MainForm_Load(object sender, EventArgs e) {
-
-          
-        }
-
-        private void frmMain_FormClosed(object sender, FormClosedEventArgs e) {
-            _FrmLogin.Close();
-        }
 
         private void applicationstoolStripMenuItem_Click(object sender, EventArgs e){
             frmApplications frm = new frmApplications();
@@ -61,22 +53,22 @@ namespace DVLD_PresentationLayer
 
         private void signOutToolStripMenuItem_Click(object sender, EventArgs e) {
 
-            clsCurrentUser.UserLoginInfo = null;
-
-            this.Hide();
+            clsGlobal.CurrentUser = null;
             _FrmLogin.Show();
+            //this.Close();
+            this.DialogResult = DialogResult.OK;
            
         }
 
         private void currentUserInfoToolStripMenuItem_Click(object sender, EventArgs e) {
-            int UserID = clsCurrentUser.UserLoginInfo.User.UserID;
+            int UserID = clsGlobal.CurrentUser.User.UserID;
 
             frmShowUserDetails UserDetails = new frmShowUserDetails(UserID);
             UserDetails.ShowDialog();
         }
 
         private void changePasswordToolStripMenuItem_Click(object sender, EventArgs e) {
-            int UserID = clsCurrentUser.UserLoginInfo.User.UserID;
+            int UserID = clsGlobal.CurrentUser.User.UserID;
 
             frmChangePassword ChangePassword = new frmChangePassword(UserID);
             ChangePassword.ShowDialog();

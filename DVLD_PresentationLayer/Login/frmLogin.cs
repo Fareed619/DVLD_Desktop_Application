@@ -39,6 +39,8 @@ namespace DVLD_PresentationLayer.Login {
                 else {
                     txtUsername.Text = "";
                     txtPassword.Text = "";
+                    ckbRememberMe.Checked = false;
+
                 }
             }
         }
@@ -48,7 +50,13 @@ namespace DVLD_PresentationLayer.Login {
             frmMain Main = new frmMain(this);
 
             this.Hide();
-            Main.Show();
+
+            // close the application
+            if (Main.ShowDialog() == DialogResult.Cancel) {
+                this.Close();
+            }
+            Main.Close(); 
+
         }
 
         private void btnLogin_Click(object sender, EventArgs e) {
@@ -81,7 +89,7 @@ namespace DVLD_PresentationLayer.Login {
                 }
 
 
-                clsCurrentUser.UserLoginInfo = LoginInfo;
+                clsGlobal.CurrentUser = LoginInfo;
 
                 _OpenMainForm();
             }
