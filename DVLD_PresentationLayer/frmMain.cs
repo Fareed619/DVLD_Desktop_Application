@@ -1,4 +1,5 @@
-﻿using DVLD_PresentationLayer.Login;
+﻿using DVLD_PresentationLayer.Applications;
+using DVLD_PresentationLayer.Login;
 using DVLD_PresentationLayer.Users;
 using System;
 using System.Collections.Generic;
@@ -24,12 +25,6 @@ namespace DVLD_PresentationLayer
         }
 
 
-        private void applicationstoolStripMenuItem_Click(object sender, EventArgs e){
-            frmApplications frm = new frmApplications();
-            frm.ShowDialog();
-
-        }
-
         private void peopleToolStripMenuItem_Click(object sender, EventArgs e) {
             frmPeople frm = new frmPeople();
             frm.ShowDialog();
@@ -44,11 +39,6 @@ namespace DVLD_PresentationLayer
         private void usersToolStripMenuItem_Click(object sender, EventArgs e) {
             frmUsers frm = new frmUsers();
             frm.ShowDialog();
-        }
-
-        private void accountSettingsToolStripMenuItem_Click(object sender, EventArgs e) {
-            //frmSettings frm = new frmSettings();
-            //frm.ShowDialog();
         }
 
         private void signOutToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -72,6 +62,13 @@ namespace DVLD_PresentationLayer
 
             frmChangePassword ChangePassword = new frmChangePassword(UserID);
             ChangePassword.ShowDialog();
+        }
+
+
+        // Applications
+        private void manageApplicationTypesToolStripMenuItem_Click(object sender, EventArgs e) {
+            frmApplicationTypes applicationTypes = new frmApplicationTypes();
+            applicationTypes.ShowDialog();
         }
     }
 }
