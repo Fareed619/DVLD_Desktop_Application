@@ -25,15 +25,15 @@
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
             this.dgvApplicationTypes = new System.Windows.Forms.DataGridView();
+            this.cmsApplicatinTypes = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.editApplicationTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.lblRecords = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.cmsApplicatinTypes = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.editApplicationTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgvApplicationTypes)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.cmsApplicatinTypes.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // dgvApplicationTypes
@@ -54,6 +54,23 @@
             this.dgvApplicationTypes.Size = new System.Drawing.Size(839, 231);
             this.dgvApplicationTypes.TabIndex = 18;
             this.dgvApplicationTypes.DataSourceChanged += new System.EventHandler(this.dgvApplicationTypes_DataSourceChanged);
+            // 
+            // cmsApplicatinTypes
+            // 
+            this.cmsApplicatinTypes.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.cmsApplicatinTypes.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editApplicationTypeToolStripMenuItem});
+            this.cmsApplicatinTypes.Name = "cmsApplicatinTypes";
+            this.cmsApplicatinTypes.Size = new System.Drawing.Size(277, 36);
+            // 
+            // editApplicationTypeToolStripMenuItem
+            // 
+            this.editApplicationTypeToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editApplicationTypeToolStripMenuItem.Image = global::DVLD_PresentationLayer.Properties.Resources.edit;
+            this.editApplicationTypeToolStripMenuItem.Name = "editApplicationTypeToolStripMenuItem";
+            this.editApplicationTypeToolStripMenuItem.Size = new System.Drawing.Size(276, 32);
+            this.editApplicationTypeToolStripMenuItem.Text = "Edit Application Type";
+            this.editApplicationTypeToolStripMenuItem.Click += new System.EventHandler(this.editApplicationTypeToolStripMenuItem_Click);
             // 
             // label1
             // 
@@ -102,23 +119,6 @@
             this.pictureBox1.TabIndex = 17;
             this.pictureBox1.TabStop = false;
             // 
-            // cmsApplicatinTypes
-            // 
-            this.cmsApplicatinTypes.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.cmsApplicatinTypes.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.editApplicationTypeToolStripMenuItem});
-            this.cmsApplicatinTypes.Name = "cmsApplicatinTypes";
-            this.cmsApplicatinTypes.Size = new System.Drawing.Size(277, 64);
-            // 
-            // editApplicationTypeToolStripMenuItem
-            // 
-            this.editApplicationTypeToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editApplicationTypeToolStripMenuItem.Image = global::DVLD_PresentationLayer.Properties.Resources.edit;
-            this.editApplicationTypeToolStripMenuItem.Name = "editApplicationTypeToolStripMenuItem";
-            this.editApplicationTypeToolStripMenuItem.Size = new System.Drawing.Size(276, 32);
-            this.editApplicationTypeToolStripMenuItem.Text = "Edit Application Type";
-            this.editApplicationTypeToolStripMenuItem.Click += new System.EventHandler(this.editApplicationTypeToolStripMenuItem_Click);
-            // 
             // frmApplicationTypes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -135,8 +135,8 @@
             this.Text = "frmApplicationTypes";
             this.Load += new System.EventHandler(this.frmApplicationTypes_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvApplicationTypes)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.cmsApplicatinTypes.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
