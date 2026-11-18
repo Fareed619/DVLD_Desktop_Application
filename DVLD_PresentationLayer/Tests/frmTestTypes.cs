@@ -78,7 +78,7 @@ namespace DVLD_PresentationLayer.Tests {
         private void editTestTypeToolStripMenuItem_Click(object sender, EventArgs e) {
             int id = (int)dgvTestTypes.CurrentRow.Cells["TestTypeID"].Value;
 
-            frmEditTestType editTestType = new frmEditTestType(id);
+            frmEditTestType editTestType = new frmEditTestType((clsTestType.enTestType)id);
             editTestType.InfoUpdated += TestTypeUpdated;
             editTestType.ShowDialog();
         }

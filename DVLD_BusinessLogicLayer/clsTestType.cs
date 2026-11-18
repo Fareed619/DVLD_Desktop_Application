@@ -13,12 +13,12 @@ namespace DVLD_BusinessLogicLayer {
 
         static private clsTestType MapDTOToTestType(clsTestTypeDTO TestTypeDTO) {
 
-            return new clsTestType(TestTypeDTO.TestTypeID, TestTypeDTO.TestTypeTitle, TestTypeDTO.TestTypeDescription, TestTypeDTO.TestTypeFees);
+            return new clsTestType((enTestType)TestTypeDTO.TestTypeID, TestTypeDTO.TestTypeTitle, TestTypeDTO.TestTypeDescription, TestTypeDTO.TestTypeFees);
         }
 
         static private clsTestTypeDTO MapTestTypeToDTO(clsTestType TestType) {
 
-            return new clsTestTypeDTO(TestType.TestTypeID, TestType.TestTypeTitle, TestType.TestTypeDescription, TestType.TestTypeFees);
+            return new clsTestTypeDTO((int)TestType.TestTypeID, TestType.TestTypeTitle, TestType.TestTypeDescription, TestType.TestTypeFees);
         }
 
 
@@ -26,8 +26,11 @@ namespace DVLD_BusinessLogicLayer {
         public enum enMode { AddNew = 0, Update = 1}
         public enMode _Mode = enMode.AddNew;
 
+        public enum enTestType { VisionTest = 1, WrittenTest = 2, StreetTest = 3};
 
-        public int    TestTypeID { get; set; }
+
+
+        public enTestType TestTypeID { get; set; }
         public string TestTypeTitle{ get; set; }
         public string TestTypeDescription{ get; set; }
         public float  TestTypeFees{ get; set; }
@@ -35,7 +38,7 @@ namespace DVLD_BusinessLogicLayer {
 
         public clsTestType() {
 
-            this.TestTypeID = -1;
+            this.TestTypeID = enTestType.VisionTest;
             this.TestTypeTitle = "";
             this.TestTypeDescription = "";
             this.TestTypeFees = 0;
@@ -43,7 +46,7 @@ namespace DVLD_BusinessLogicLayer {
             this._Mode = enMode.AddNew;
         }
 
-        private clsTestType(int id, string title, string description, float fees) {
+        private clsTestType(enTestType id, string title, string description, float fees) {
 
             this.TestTypeID = id;
             this.TestTypeTitle = title;
@@ -59,9 +62,9 @@ namespace DVLD_BusinessLogicLayer {
             return clsTestTypesData.ListTestTypes();
         }
 
-        static public clsTestType Find(int testTypeID) {
+        static public clsTestType Find(clsTestType.enTestType testTypeID) {
 
-            clsTestTypeDTO TestTypeDTO = clsTestTypesData.Find(testTypeID);
+            clsTestTypeDTO TestTypeDTO = clsTestTypesData.Find((int)testTypeID);
 
             if (TestTypeDTO == null) return null;
 
@@ -70,9 +73,11 @@ namespace DVLD_BusinessLogicLayer {
 
         private bool _AddNewTestType() {
 
-            this.TestTypeID = clsTestTypesData.Insert(MapTestTypeToDTO(this));
+            int ID = clsTestTypesData.Insert(MapTestTypeToDTO(this));
 
-            if(this.TestTypeID != -1) {
+            if(ID != -1) {
+
+                this.TestTypeID = (enTestType)ID;
 
                 this._Mode = enMode.Update;
                 return true;

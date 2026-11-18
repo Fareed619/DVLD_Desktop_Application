@@ -26,11 +26,11 @@
             this.components = new System.ComponentModel.Container();
             this.lblRecords = new System.Windows.Forms.Label();
             this.dgvTestTypes = new System.Windows.Forms.DataGridView();
-            this.label1 = new System.Windows.Forms.Label();
             this.cmsTestTypes = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.editTestTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label1 = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.editTestTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTestTypes)).BeginInit();
             this.cmsTestTypes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -65,6 +65,23 @@
             this.dgvTestTypes.TabIndex = 27;
             this.dgvTestTypes.DataSourceChanged += new System.EventHandler(this.dgvTestTypes_DataSourceChanged);
             // 
+            // cmsTestTypes
+            // 
+            this.cmsTestTypes.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.cmsTestTypes.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editTestTypeToolStripMenuItem});
+            this.cmsTestTypes.Name = "cmsTestTypes";
+            this.cmsTestTypes.Size = new System.Drawing.Size(200, 34);
+            // 
+            // editTestTypeToolStripMenuItem
+            // 
+            this.editTestTypeToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editTestTypeToolStripMenuItem.Image = global::DVLD_PresentationLayer.Properties.Resources.edit_32;
+            this.editTestTypeToolStripMenuItem.Name = "editTestTypeToolStripMenuItem";
+            this.editTestTypeToolStripMenuItem.Size = new System.Drawing.Size(199, 30);
+            this.editTestTypeToolStripMenuItem.Text = "Edit Test Type";
+            this.editTestTypeToolStripMenuItem.Click += new System.EventHandler(this.editTestTypeToolStripMenuItem_Click);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -75,14 +92,6 @@
             this.label1.Size = new System.Drawing.Size(419, 51);
             this.label1.TabIndex = 25;
             this.label1.Text = "Manage Test Types";
-            // 
-            // cmsTestTypes
-            // 
-            this.cmsTestTypes.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.cmsTestTypes.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.editTestTypeToolStripMenuItem});
-            this.cmsTestTypes.Name = "cmsTestTypes";
-            this.cmsTestTypes.Size = new System.Drawing.Size(215, 62);
             // 
             // btnClose
             // 
@@ -109,15 +118,6 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 26;
             this.pictureBox1.TabStop = false;
-            // 
-            // editTestTypeToolStripMenuItem
-            // 
-            this.editTestTypeToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI Semibold", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editTestTypeToolStripMenuItem.Image = global::DVLD_PresentationLayer.Properties.Resources.edit_32;
-            this.editTestTypeToolStripMenuItem.Name = "editTestTypeToolStripMenuItem";
-            this.editTestTypeToolStripMenuItem.Size = new System.Drawing.Size(214, 30);
-            this.editTestTypeToolStripMenuItem.Text = "Edit Test Type";
-            this.editTestTypeToolStripMenuItem.Click += new System.EventHandler(this.editTestTypeToolStripMenuItem_Click);
             // 
             // frmTestTypes
             // 

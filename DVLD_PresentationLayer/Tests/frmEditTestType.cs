@@ -12,7 +12,7 @@ using System.Windows.Forms;
 namespace DVLD_PresentationLayer.Tests {
     public partial class frmEditTestType : Form {
 
-        private int _TestTypeID = -1;
+        private clsTestType.enTestType _TestTypeID = clsTestType.enTestType.VisionTest;
         private clsTestType _TestType;
 
         public event Action InfoUpdated;
@@ -24,7 +24,7 @@ namespace DVLD_PresentationLayer.Tests {
 
 
 
-        public frmEditTestType(int testTypeId) {
+        public frmEditTestType(clsTestType.enTestType testTypeId) {
             InitializeComponent();
 
             _TestTypeID = testTypeId;
@@ -37,6 +37,7 @@ namespace DVLD_PresentationLayer.Tests {
             if (_TestType == null) {
 
                 MessageBox.Show("Test Type is not found", "Missing", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.Close();
                 return;
             }
 
@@ -45,7 +46,7 @@ namespace DVLD_PresentationLayer.Tests {
 
         private void _FillTestTypeInfo() {
 
-            txtID.Text = _TestType.TestTypeID.ToString();
+            txtID.Text = Convert.ToInt32(_TestType.TestTypeID).ToString();
             txtTitle.Text = _TestType.TestTypeTitle;
             txtDescription.Text = _TestType.TestTypeDescription;
             txtFees.Text = _TestType.TestTypeFees.ToString();
