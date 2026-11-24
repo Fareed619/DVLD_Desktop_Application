@@ -2,6 +2,7 @@
 using DVLD_SharedDTO;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -70,6 +71,11 @@ namespace DVLD_BusinessLogicLayer {
             else {
                 return null;
             }
+        }
+
+        static public DataTable ListLicenseClasses() {
+
+            return clsLicenseClassData.ListLicenseClasses();
         }
 
     }

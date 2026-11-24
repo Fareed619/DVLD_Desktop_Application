@@ -74,6 +74,12 @@ namespace DVLD_BusinessLogicLayer {
         public string ImagePath { get; set; } = string.Empty;
         public int NationalityCountryID { get; set; }
 
+        public string FullName {
+            get {
+                return FirstName + ' ' + SecondName + ' ' + ThirdName + ' ' + LastName;
+            }
+        }
+
         public clsCountry CountryInfo;
 
 

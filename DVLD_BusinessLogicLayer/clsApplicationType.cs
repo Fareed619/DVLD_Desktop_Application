@@ -59,6 +59,20 @@ namespace DVLD_BusinessLogicLayer {
             }
         }
 
+        static public clsApplicationType Find(string ApplicationTypeTitle) { 
+
+            int ID = -1;
+            float Fees = 0;
+
+            if(clsApplicationTypesData.Find(ApplicationTypeTitle, ref ID, ref Fees)) {
+
+                return new clsApplicationType(ID, ApplicationTypeTitle, Fees);
+            }
+            else {
+                return null;
+            }
+        }
+
 
         private bool _AddNewApplicationType() {
 

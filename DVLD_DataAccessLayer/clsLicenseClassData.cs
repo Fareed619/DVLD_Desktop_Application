@@ -1,6 +1,7 @@
 ﻿using DVLD_SharedDTO;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -17,9 +18,9 @@ namespace DVLD_DataAccessLayer {
                 licenseClassID: (int)reader["LicenseClassID"],
                 className: (string)reader["ClassName"],
                 classDescription: (string)reader["ClassDescription"],
-                minAgeAllowed: (byte)reader["MinAgeAllowed"],
+                minAgeAllowed: (byte)reader["MinimumAllowedAge"],
                 defaultValidityLength: (byte)reader["DefaultValidityLength"],
-                classFees: Convert.ToSingle(reader["ClassFess"])
+                classFees: Convert.ToSingle(reader["ClassFees"])
 
             );
         }
@@ -106,6 +107,40 @@ namespace DVLD_DataAccessLayer {
 
         }
        
+        static public DataTable ListLicenseClasses() {
+
+            DataTable LicenseClasses = new DataTable();
+
+            SqlConnection Connection = new SqlConnection(clsSettings.ConnectionString);
+
+            string query = "SELECT * FROM LicenseClasses; ";
+
+            SqlCommand Command = new SqlCommand(query, Connection);
+
+            try {
+                Connection.Open();
+
+                SqlDataReader reader = Command.ExecuteReader();
+
+                if (reader.HasRows) {
+                    LicenseClasses.Load(reader);
+                }
+                else {
+                    LicenseClasses = null;
+                }
+
+            }
+            catch (Exception Ex) {
+
+                LicenseClasses = null;
+
+            }
+            finally {
+                Connection.Close();
+            }
+
+            return LicenseClasses;
+        }
 
     }
 }

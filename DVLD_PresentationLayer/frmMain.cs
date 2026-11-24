@@ -1,4 +1,5 @@
 ﻿using DVLD_PresentationLayer.Applications;
+using DVLD_PresentationLayer.Applications.Local_License;
 using DVLD_PresentationLayer.Login;
 using DVLD_PresentationLayer.Tests;
 using DVLD_PresentationLayer.Users;
@@ -75,6 +76,16 @@ namespace DVLD_PresentationLayer
         private void manageTestTypesToolStripMenuItem_Click(object sender, EventArgs e) {
             frmTestTypes testTypes = new frmTestTypes();
             testTypes.ShowDialog();
+        }
+
+        private void localDrivingLicenseApplicationsToolStripMenuItem_Click(object sender, EventArgs e) {
+            frmLocalDrivingLicenseApplications applications = new frmLocalDrivingLicenseApplications();
+            applications.ShowDialog();
+        }
+
+        private void localLicenseToolStripMenuItem_Click(object sender, EventArgs e) {
+            frmAddUpdateLocalDrivingLicense newLocalLicense = new frmAddUpdateLocalDrivingLicense();
+            newLocalLicense.ShowDialog();
         }
     }
 }

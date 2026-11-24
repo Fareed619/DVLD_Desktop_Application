@@ -23,7 +23,7 @@ namespace DVLD_PresentationLayer.People.Controls {
                 handler(PersonID);
             }
 
-            // Second Way (Simplier)
+            // Second Way (Simpler)
             //PersonSelected?.Invoke(PersonID);
         }
 
@@ -76,7 +76,8 @@ namespace DVLD_PresentationLayer.People.Controls {
             cbFilterBy.Items.Add("Person ID");
             cbFilterBy.Items.Add("National No.");
 
-            cbFilterBy.SelectedIndex = 0;
+            cbFilterBy.SelectedIndex = 2;
+            FilterFocus();
 
 
             groupBox1.Font = new Font("Microsoft Sans Serif", 12, FontStyle.Bold);
@@ -165,6 +166,20 @@ namespace DVLD_PresentationLayer.People.Controls {
         private void cbFilterBy_SelectedIndexChanged(object sender, EventArgs e) {
             if(cbFilterBy.SelectedIndex != 0) {
                 txtFilterValue.Focus();
+            }
+        }
+
+        public void FilterFocus() {
+
+            txtFilterValue.Focus();
+        }
+
+        private void txtFilterValue_KeyPress(object sender, KeyPressEventArgs e) {
+
+            // Check if the pressed key is specifically Enter
+            if (e.KeyChar == (char)Keys.Return) {
+                FindPerson();
+
             }
         }
     }

@@ -157,5 +157,48 @@ namespace DVLD_DataAccessLayer {
             return isFound;
         }
 
+        static public bool Find(string ApplicationTypeTitle, ref int ID, ref float Fees) {
+
+            bool isFound = false;
+
+
+            SqlConnection Connection = new SqlConnection(clsSettings.ConnectionString);
+
+            string query = @"SELECT * FROM ApplicationTypes 
+                            WHERE ApplicationTypeTitle = @ApplicationTypeTitle; ";
+
+            SqlCommand Command = new SqlCommand(query, Connection);
+
+            Command.Parameters.AddWithValue("@ApplicationTypeTitle", ApplicationTypeTitle);
+
+            try {
+
+                Connection.Open();
+                SqlDataReader reader = Command.ExecuteReader();
+
+                if (reader.Read()) {
+
+                    ID = (int)reader["ApplicationTypeID"];
+                    Fees = Convert.ToSingle(reader["ApplicationFees"]);
+                    
+                    isFound = true;
+                }
+                else {
+                    isFound = false;
+                }
+
+            }
+            catch (Exception Ex) {
+                isFound = false;
+
+
+            }
+            finally {
+                Connection.Close();
+            }
+
+            return isFound;
+        }
+
     }
 }

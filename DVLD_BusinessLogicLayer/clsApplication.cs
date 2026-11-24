@@ -21,7 +21,7 @@ namespace DVLD_BusinessLogicLayer {
                 appStatus: (enAppStatus)AppDTO.ApplicationStatus,
                 fees: AppDTO.PaidFees,
 
-                appTypeID: AppDTO.ApplicationTypeID,
+                appTypeID:(enApplicationType) AppDTO.ApplicationTypeID,
                 applicantPersonID: AppDTO.ApplicantPersonID,
                 createdByUserID: AppDTO.CreatedByUserID
 
@@ -38,7 +38,7 @@ namespace DVLD_BusinessLogicLayer {
                appStatus: (byte)App.ApplicationStatus,
                fees: App.PaidFees,
 
-               appTypeID: App.ApplicationTypeID,
+               appTypeID: (int) App.ApplicationTypeID,
                applicantPersonID: App.ApplicantPersonID,
                createdByUserID: App.CreatedByUserID
 
@@ -50,15 +50,40 @@ namespace DVLD_BusinessLogicLayer {
         public enum enMode { AddNew = 0, Update = 1}
         public enum enAppStatus { New = 1, Cancelled = 2, Completed = 3}
 
-        public enMode _Mode;
+        public enum enApplicationType {
+            NewDrivingLicense = 1, RenewDrivingLicense = 2, ReplaceLostDrivingLicense = 3, ReplaceDamagedDrivingLicense = 4, ReleaseDetainedDrivingLicsense = 5, NewInternationalLicense = 6, RetakeTest = 7
+        };
+
+        public enMode Mode;
 
         public int ApplicationID { get; set; }
         public DateTime ApplicationDate { get; set; }
         public DateTime LastStatusDate  { get; set; }
-        public enAppStatus ApplicationStatus { get; set; }
         public float PaidFees { get; set; }
+        public enAppStatus ApplicationStatus { get; set; }
 
-        public int ApplicationTypeID { get; set; }
+        public string ApplicationStatusText {
+
+            get {
+                switch (ApplicationStatus) {
+
+                    case enAppStatus.New:
+                        return "New";
+
+                    case enAppStatus.Cancelled:
+                        return "Cancelled";
+
+                    case enAppStatus.Completed:
+                        return "Completed";
+
+                    default:
+                        return "Unkown";
+
+                }
+            }
+        }
+
+        public enApplicationType ApplicationTypeID { get; set; }
         public int ApplicantPersonID { get; set; }
         public int CreatedByUserID   { get; set; }
 
@@ -71,11 +96,11 @@ namespace DVLD_BusinessLogicLayer {
 
             this.ApplicationID = -1;
             this.ApplicationDate = DateTime.Now;
-            this.LastStatusDate = DateTime.MinValue;
+            this.LastStatusDate = DateTime.Now;
             this.ApplicationStatus = enAppStatus.New;
             this.PaidFees = 0;
 
-            this.ApplicationTypeID = -1;
+            this.ApplicationTypeID = enApplicationType.NewDrivingLicense;
             this.ApplicantPersonID = -1;
             this.CreatedByUserID = -1;
 
@@ -83,10 +108,10 @@ namespace DVLD_BusinessLogicLayer {
             this.Applicant = null;
             this.User = null;
 
-            this._Mode = enMode.AddNew;
+            this.Mode = enMode.AddNew;
         }
 
-        private clsApplication(int appID, DateTime appDate, DateTime lastStatusDate, enAppStatus appStatus, float fees, int appTypeID, int applicantPersonID, int createdByUserID) {
+        protected clsApplication(int appID, DateTime appDate, DateTime lastStatusDate, enAppStatus appStatus, float fees, enApplicationType appTypeID, int applicantPersonID, int createdByUserID) {
 
 
             this.ApplicationID = appID;
@@ -99,12 +124,12 @@ namespace DVLD_BusinessLogicLayer {
             this.ApplicantPersonID = applicantPersonID;
             this.CreatedByUserID = createdByUserID;
 
-            this.ApplicationType = clsApplicationType.Find(appTypeID);
+            this.ApplicationType = clsApplicationType.Find((int)appTypeID);
             this.Applicant = clsPerson.Find(applicantPersonID);
             this.User = clsUser.Find(createdByUserID);
 
 
-            this._Mode = enMode.Update;
+            this.Mode = enMode.Update;
         }
 
 
@@ -122,12 +147,32 @@ namespace DVLD_BusinessLogicLayer {
             }
         }
 
+
         static public DataTable ListApplications() {
 
             return clsApplicationData.ListApplications();
         }
 
+        public bool Cancel() {
 
+            return clsApplicationData.UpdateStatus(this.ApplicationID, 2);
+        }
+
+        public bool SetComplete() {
+
+            return clsApplicationData.UpdateStatus(this.ApplicationID, 3);
+        }
+
+        public bool Delete() {
+
+            return clsApplicationData.Delete(this.ApplicationID);
+        }
+
+
+        static public int GetActiveApplicationIDForLicenseClass(int PersonID, int LicenseClassID, enApplicationType AppTypeID) {
+            // New Status = 1
+            return clsApplicationData.GetApplicationIDForLicenseClass(PersonID, LicenseClassID, (int)AppTypeID, 1);
+        }
 
 
         private bool _AddNewApplication() {
@@ -136,7 +181,7 @@ namespace DVLD_BusinessLogicLayer {
 
             if (this.ApplicationID != -1) {
 
-                this._Mode = enMode.Update;
+                this.Mode = enMode.Update;
                 return true;
             }
             else {
@@ -153,9 +198,9 @@ namespace DVLD_BusinessLogicLayer {
             return clsApplicationData.Update(MapApplicationToDTO(this));
         }
 
-        public bool Save() {
+        public bool SaveApplication() {
 
-            switch (this._Mode) {
+            switch (this.Mode) {
 
                 case enMode.AddNew:
                     return _AddNewApplication();
