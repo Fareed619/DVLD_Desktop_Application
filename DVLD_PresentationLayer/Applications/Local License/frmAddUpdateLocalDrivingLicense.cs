@@ -68,7 +68,7 @@ namespace DVLD_PresentationLayer.Applications.Local_License {
                     this.Close();
                     return;
                 }
-
+                _PersonID = this._LocalDrivingLicenseApplication.ApplicantPersonID;
                 _FillExistingInfoIntoForm();
             }
      
@@ -204,10 +204,10 @@ namespace DVLD_PresentationLayer.Applications.Local_License {
                 lblDLApplicationID.Text = _LocalDrivingLicenseApplication.LocalDrivingLicenseApplicationID.ToString();
                 ctrlPersonCardWithFilter1.FilterEnabled = false;
 
-                MessageBox.Show("Local Driving License Application has been created successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Local Driving License Application has been Saved successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else {
-                MessageBox.Show("Local Driving License Application Creation has been failed", "Failure", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Local Driving License Application Saving has been failed", "Failure", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
         }

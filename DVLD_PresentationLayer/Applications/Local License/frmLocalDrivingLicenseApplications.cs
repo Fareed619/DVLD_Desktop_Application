@@ -118,9 +118,14 @@ namespace DVLD_PresentationLayer.Applications.Local_License {
 
         }
 
+        private void _RefreshFilter() {
+            cbFilterBy.SelectedValue = "None";
+            txtFilterValue.Text = string.Empty;
+        }
 
         public void OnLocalApplicationSaved() {
             _LoadLocalDrivingLicesneListIntoDGV();
+            _RefreshFilter();
         }
 
 
