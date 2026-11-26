@@ -23,17 +23,10 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.ctrlShowApplicationInfo1 = new DVLD_PresentationLayer.Applications.Controls.ctrlShowApplicationInfo();
             this.label1 = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
+            this.ctrlShowApplicationInfo1 = new DVLD_PresentationLayer.Applications.Controls.ctrlShowApplicationInfo();
             this.SuspendLayout();
-            // 
-            // ctrlShowApplicationInfo1
-            // 
-            this.ctrlShowApplicationInfo1.Location = new System.Drawing.Point(27, 117);
-            this.ctrlShowApplicationInfo1.Name = "ctrlShowApplicationInfo1";
-            this.ctrlShowApplicationInfo1.Size = new System.Drawing.Size(976, 530);
-            this.ctrlShowApplicationInfo1.TabIndex = 0;
             // 
             // label1
             // 
@@ -54,7 +47,7 @@
             this.btnClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClose.Image = global::DVLD_PresentationLayer.Properties.Resources.CloseSmall1;
             this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClose.Location = new System.Drawing.Point(852, 652);
+            this.btnClose.Location = new System.Drawing.Point(872, 500);
             this.btnClose.Margin = new System.Windows.Forms.Padding(2);
             this.btnClose.Name = "btnClose";
             this.btnClose.Padding = new System.Windows.Forms.Padding(15, 0, 15, 0);
@@ -65,14 +58,21 @@
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
+            // ctrlShowApplicationInfo1
+            // 
+            this.ctrlShowApplicationInfo1.Location = new System.Drawing.Point(6, 99);
+            this.ctrlShowApplicationInfo1.Name = "ctrlShowApplicationInfo1";
+            this.ctrlShowApplicationInfo1.Size = new System.Drawing.Size(1014, 396);
+            this.ctrlShowApplicationInfo1.TabIndex = 19;
+            // 
             // frmShowLocalDrivingLicenseApplicationInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1029, 726);
+            this.ClientSize = new System.Drawing.Size(1029, 569);
+            this.Controls.Add(this.ctrlShowApplicationInfo1);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.ctrlShowApplicationInfo1);
             this.Name = "frmShowLocalDrivingLicenseApplicationInfo";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmShowLocalDrivingLicenseApplicationInfo";
@@ -83,9 +83,8 @@
         }
 
         #endregion
-
-        private Controls.ctrlShowApplicationInfo ctrlShowApplicationInfo1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnClose;
+        private Controls.ctrlShowApplicationInfo ctrlShowApplicationInfo1;
     }
 }

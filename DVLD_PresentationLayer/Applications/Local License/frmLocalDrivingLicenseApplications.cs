@@ -1,4 +1,5 @@
 ﻿using DVLD_BusinessLogicLayer;
+using DVLD_PresentationLayer.Tests.Test_Appointments;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -240,16 +241,50 @@ namespace DVLD_PresentationLayer.Applications.Local_License {
         private void dgvLocalApplications_SelectionChanged(object sender, EventArgs e) {
 
             if(dgvLocalApplications.SelectedRows.Count > 0) {
+
                 string ApplicationStatus = (string)dgvLocalApplications.CurrentRow.Cells["Status"].Value;
 
                 if(ApplicationStatus != "NEW") {
                     cancelToolStripMenuItem.Enabled = false;
+                    scheduleTestToolStripMenuItem.Enabled = false;
                 }
                 else {
                     cancelToolStripMenuItem.Enabled = true;
+                    scheduleTestToolStripMenuItem.Enabled = true;
 
                 }
+
+
+                // Control which test type to show
+                _ShowAllowedTests((int)dgvLocalApplications.CurrentRow.Cells["LocalDrivingLicenseApplicationID"].Value);
+
+
             }
+            
+        }
+
+
+        private void _ShowAllowedTests(int localDrivingLicenseApplicationID) {
+
+            visionTestToolStripMenuItem.Enabled = false;
+            writtenTestToolStripMenuItem.Enabled = false;
+            streetTestToolStripMenuItem.Enabled = false;
+
+            if (!clsTestAppointment.IsVisionTestCompleted(localDrivingLicenseApplicationID)) {
+                visionTestToolStripMenuItem.Enabled = true;
+                return;
+            }
+
+            if (!clsTestAppointment.IsWrittenTestCompleted(localDrivingLicenseApplicationID)) {
+                writtenTestToolStripMenuItem.Enabled = true;
+                return;
+            }
+
+            if (!clsTestAppointment.IsStreetTestCompleted(localDrivingLicenseApplicationID)) {
+                streetTestToolStripMenuItem.Enabled = true;
+                return;
+            }
+
         }
 
         private void editApplicationToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -260,5 +295,19 @@ namespace DVLD_PresentationLayer.Applications.Local_License {
             frm.ShowDialog();
         }
 
+        private void visionTestToolStripMenuItem_Click(object sender, EventArgs e) {
+            frmTestAppointments frm = new frmTestAppointments(clsTestType.enTestType.VisionTest, (int)dgvLocalApplications.CurrentRow.Cells["LocalDrivingLicenseApplicationID"].Value);
+            frm.ShowDialog();
+        }
+
+        private void writtenTestToolStripMenuItem_Click(object sender, EventArgs e) {
+            frmTestAppointments frm = new frmTestAppointments(clsTestType.enTestType.WrittenTest, (int)dgvLocalApplications.CurrentRow.Cells["LocalDrivingLicenseApplicationID"].Value);
+            frm.ShowDialog();
+        }
+
+        private void streetTestToolStripMenuItem_Click(object sender, EventArgs e) {
+            frmTestAppointments frm = new frmTestAppointments(clsTestType.enTestType.StreetTest, (int)dgvLocalApplications.CurrentRow.Cells["LocalDrivingLicenseApplicationID"].Value);
+            frm.ShowDialog();
+        }
     }
 }

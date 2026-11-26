@@ -30,7 +30,7 @@ namespace DVLD_PresentationLayer.Applications.Controls {
         }
 
         private void ctrlShowApplicationInfo_Load(object sender, EventArgs e) {
-
+             
             groupBox1.Font = new Font("Microsoft Sans Serif", 10, FontStyle.Bold);
             groupBox2.Font = new Font("Microsoft Sans Serif", 10, FontStyle.Bold);
 
