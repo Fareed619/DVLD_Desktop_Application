@@ -119,6 +119,40 @@ namespace DVLD_BusinessLogicLayer {
             }
         }
 
+        static public clsTestAppointment DoesLocalApplicationHaveActiveAppointment(int localDrivingLicenseApplicationID) {
+
+            clsTestAppointmentDTO DTO = clsTestAppointmentsData.DoesLocalAppHaveActiveAppointment(localDrivingLicenseApplicationID);
+
+            if (DTO != null) {
+
+                return _MapDTOToTestAppointment(DTO);
+            }
+            else {
+                return null;
+            }
+        }
+
+        //static public bool IsTestCompleted(int localDrivingLicenseApplicationID, clsTestAppointment.enTestType testTypeID) {
+        //    return clsTestAppointmentsData.IsTestCompleted(localDrivingLicenseApplicationID, (int)testTypeID);
+        //}
+
+        static public bool IsVisionTestCompleted(int localDrivingLicenseApplicationID) {
+
+            return clsTestAppointmentsData.IsTestCompleted(localDrivingLicenseApplicationID, (int)enTestType.VisionTest);
+        }
+        static public bool IsWrittenTestCompleted(int localDrivingLicenseApplicationID) {
+
+            return clsTestAppointmentsData.IsTestCompleted(localDrivingLicenseApplicationID, (int)enTestType.WrittenTest);
+        }
+        static public bool IsStreetTestCompleted(int localDrivingLicenseApplicationID) {
+
+            return clsTestAppointmentsData.IsTestCompleted(localDrivingLicenseApplicationID, (int)enTestType.StreetTest);
+        }
+
+        static public bool SetAppointmentLocked(int testAppointment) {
+
+            return clsTestAppointmentsData.SetAppointmentLocked(testAppointment);
+        }
 
         private bool _AddNewTestAppointment() {
 
@@ -133,8 +167,6 @@ namespace DVLD_BusinessLogicLayer {
             }
         }
 
-
-        // Update
         private bool _UpdateTestAppointment() {
 
             return clsTestAppointmentsData.Update(this.TestAppointmentID, this.AppointmentDate);

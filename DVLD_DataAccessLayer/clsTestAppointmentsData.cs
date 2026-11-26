@@ -115,6 +115,116 @@ namespace DVLD_DataAccessLayer {
             return TestAppointment;
         }
 
+        static public clsTestAppointmentDTO DoesLocalAppHaveActiveAppointment(int LocalDrivingLicenseApplicationID) {
+
+            clsTestAppointmentDTO TestAppointment = null;
+
+            SqlConnection Connection = new SqlConnection(clsSettings.ConnectionString);
+
+            string query = "SELECT * FROM TestAppointments WHERE LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID AND IsLocked = 0;";
+
+            SqlCommand Command = new SqlCommand(query, Connection);
+
+            Command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
+
+            try {
+                Connection.Open();
+
+                SqlDataReader reader = Command.ExecuteReader();
+
+                if (reader.Read()) {
+                    TestAppointment = _MapDataReaderToTestAppointmentDTO(reader);
+
+                }
+                else {
+                    TestAppointment = null;
+                }
+
+                reader.Close();
+            }
+            catch (Exception ex) {
+                //throw new Exception("Error in clsManagePeopleData.Find: " + ex.Message);
+                TestAppointment = null;
+
+            }
+            finally {
+                Connection.Close();
+            }
+
+            return TestAppointment;
+        }
+
+
+        static public bool IsTestCompleted(int LocalDrivingLicenseApplicationID, int TestTypeID) {
+
+            int Count = 0;
+
+            SqlConnection Connection = new SqlConnection(clsSettings.ConnectionString);
+
+            string query = @"SELECT COUNT(*) FROM Tests
+                            INNER JOIN TestAppointments
+	                            ON Tests.TestAppointmentID = TestAppointments.TestAppointmentID
+                            WHERE LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID AND TestTypeID = @TestTypeID AND TestResult = 1; ";
+
+            SqlCommand Command = new SqlCommand(query, Connection);
+
+            Command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
+            Command.Parameters.AddWithValue("@TestTypeID", TestTypeID);
+
+            try {
+                Connection.Open();
+
+                object res = Command.ExecuteScalar();
+
+                if (res != null && int.TryParse(res.ToString(), out int count)) {
+                    Count = count;
+
+                }              
+
+            }
+            catch (Exception ex) {
+                //throw new Exception("Error in clsManagePeopleData.Find: " + ex.Message);
+                Count = 0;
+
+            }
+            finally {
+                Connection.Close();
+            }
+
+            return (Count > 0);
+        }
+
+
+        static public bool SetAppointmentLocked(int TestAppointmentID) {
+
+            int rowAffacted = 0;
+
+            SqlConnection Connection = new SqlConnection(clsSettings.ConnectionString);
+
+            string query = @"UPDATE TestAppointments 
+                             SET IsLocked = 1
+                             WHERE TestAppointmentID = @TestAppointmentID ; ";
+
+            SqlCommand Command = new SqlCommand(query, Connection);
+
+            Command.Parameters.AddWithValue("@TestAppointmentID", TestAppointmentID);
+
+
+            try {
+
+                Connection.Open();
+                rowAffacted = Command.ExecuteNonQuery();
+            }
+            catch (Exception Ex) {
+
+            }
+            finally {
+                Connection.Close();
+            }
+
+            return (rowAffacted > 0);
+        }
+
         static public int AddNew(clsTestAppointmentDTO TestAppointmentInfo) {
              
             int ID = -1;
@@ -133,7 +243,16 @@ namespace DVLD_DataAccessLayer {
             Command.Parameters.AddWithValue("@PaidFees", TestAppointmentInfo.PaidFees);
             Command.Parameters.AddWithValue("@CreatedByUserID", TestAppointmentInfo.CreatedByUserID);
             Command.Parameters.AddWithValue("@IsLocked", TestAppointmentInfo.IsLocked);
-            Command.Parameters.AddWithValue("@RetakeTestApplicationID", TestAppointmentInfo.RetakeTestApplicationID);
+
+            if(TestAppointmentInfo.RetakeTestApplicationID == -1) {
+                Command.Parameters.AddWithValue("@RetakeTestApplicationID", DBNull.Value);
+            }
+            else {
+                Command.Parameters.AddWithValue("@RetakeTestApplicationID", TestAppointmentInfo.RetakeTestApplicationID);
+            }
+
+
+
 
             try {
 
