@@ -14,11 +14,11 @@ namespace DVLD_SharedDTO {
         public int LocalDrivingLicenseApplicationID { get; set; }
         public float PaidFees { get; set; }
         public int CreatedByUserID { get; set; }
-        public byte IsLocked { get; set; }
+        public bool IsLocked { get; set; }
         public int RetakeTestApplicationID { get; set; }
 
 
-        public clsTestAppointmentDTO(int testAppointmentID, DateTime appointmentDate, int testTypeID, int localDrivingLicenseApplicationID, float fees, int createdByUser, byte isLocked, int retakeTestApplicationID = -1) {
+        public clsTestAppointmentDTO(int testAppointmentID, DateTime appointmentDate, int testTypeID, int localDrivingLicenseApplicationID, float fees, int createdByUser, bool isLocked, int retakeTestApplicationID = -1) {
             this.TestAppointmentID = testAppointmentID;
             this.AppointmentDate = appointmentDate;
             this.TestTypeID = testTypeID;

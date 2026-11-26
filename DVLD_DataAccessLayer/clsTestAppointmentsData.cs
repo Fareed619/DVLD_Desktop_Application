@@ -11,6 +11,16 @@ using System.Threading.Tasks;
 namespace DVLD_DataAccessLayer {
     static public class clsTestAppointmentsData {
 
+        static private int _GetNullValueInt(SqlDataReader reader) {
+
+            int colOrdinal = reader.GetOrdinal("RetakeTestApplicationID");
+
+            return reader.IsDBNull(colOrdinal)
+                ? -1
+                : reader.GetInt32(colOrdinal);
+            
+        }
+
         static private clsTestAppointmentDTO _MapDataReaderToTestAppointmentDTO(SqlDataReader reader) {
 
             return new clsTestAppointmentDTO(
@@ -18,15 +28,15 @@ namespace DVLD_DataAccessLayer {
                 appointmentDate: (DateTime)reader["AppointmentDate"],
                 testTypeID: (int)reader["TestTypeID"],
                 localDrivingLicenseApplicationID: (int)reader["LocalDrivingLicenseApplicationID"],
-                fees: (float)reader["PaidFees"],
+                fees: Convert.ToSingle(reader["PaidFees"]),
                 createdByUser: (int)reader["CreatedByUserID"],
-                isLocked: (byte)reader["IsLocked"],
-                retakeTestApplicationID: reader["RetakeTestApplicationID"] == DBNull.Value ? -1 : (int)reader["RetakeTestApplicationID"]
+                isLocked: (bool)reader["IsLocked"],
+                retakeTestApplicationID: _GetNullValueInt(reader)
 
             );
         }
 
-        static public DataTable ListTestAppointments() {
+        static public DataTable ListTestAppointments(int LocalDrivingLicenseApplicationID) {
 
             DataTable TestAppointments = new DataTable();
 
@@ -34,9 +44,12 @@ namespace DVLD_DataAccessLayer {
 
             string query = @"SELECT  
                             TestAppointmentID, AppointmentDate, PaidFees, IsLocked
-                            FROM TestAppointments; ";
+                            FROM TestAppointments
+                            WHERE LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID ; ";
 
             SqlCommand Command = new SqlCommand(query, Connection);
+
+            Command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
 
             try {
                 Connection.Open();

@@ -56,14 +56,14 @@ namespace DVLD_BusinessLogicLayer {
         public int LocalDrivingLicenseApplicationID { get; set; }
         public float PaidFees { get; set; }
         public int CreatedByUserID { get; set; }
-        public byte IsLocked { get; set; }
+        public bool IsLocked { get; set; }
         public int RetakeTestApplicationID { get; set; }
 
         // Composition
-        clsTestType TestType;
-        clsLocalDrivingLicenseApplication LocalDrivingLicenseApplication;
-        clsUser CreatedByUser;
-        clsApplication RetakeTestApplication;
+        public clsTestType TestType;
+        public clsLocalDrivingLicenseApplication LocalDrivingLicenseApplication;
+        public clsUser CreatedByUser;
+        public clsApplication RetakeTestApplication;
 
 
         // AddNew Constructor
@@ -74,14 +74,14 @@ namespace DVLD_BusinessLogicLayer {
             this.LocalDrivingLicenseApplicationID = -1;
             this.PaidFees = 0;
             this.CreatedByUserID = -1;
-            this.IsLocked = 0;
+            this.IsLocked = false;
             this.RetakeTestApplicationID = -1;
 
             this._Mode = enMode.AddNew;
         }
 
         // Update Constructor
-        private clsTestAppointment(int testAppointmentID, DateTime appointmentDate, enTestType testTypeID, int localDrivingLicenseApplicationID, float fees, int createdByUser, byte isLocked, int retakeTestApplicationID = -1) {
+        private clsTestAppointment(int testAppointmentID, DateTime appointmentDate, enTestType testTypeID, int localDrivingLicenseApplicationID, float fees, int createdByUser, bool isLocked, int retakeTestApplicationID = -1) {
             this.TestAppointmentID = testAppointmentID;
             this.AppointmentDate = appointmentDate;
             this.TestTypeID = testTypeID;
@@ -101,9 +101,9 @@ namespace DVLD_BusinessLogicLayer {
         }
 
 
-        static public DataTable ListTestAppointments() {
+        static public DataTable ListTestAppointments(int localDrivingLicenseApplicationID) {
 
-            return clsTestAppointmentsData.ListTestAppointments();
+            return clsTestAppointmentsData.ListTestAppointments(localDrivingLicenseApplicationID);
         }
 
         static public clsTestAppointment Find(int testAppointmentID) {
