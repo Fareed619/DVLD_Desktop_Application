@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DVLD_DataAccessLayer {
     static public class clsTestData {
@@ -171,6 +172,45 @@ namespace DVLD_DataAccessLayer {
             }
 
             return (rowAffacted > 0);
+        }
+
+        static public byte TrialsCount(int LocalDrivingLicenseApplicationID, int TestTypeID) {
+            byte Trials = 0;
+
+            SqlConnection Connection = new SqlConnection(clsSettings.ConnectionString);
+
+            string query = @"SELECT * 
+                            FROM Tests
+                            INNER JOIN TestAppointments
+	                            ON Tests.TestAppointmentID = TestAppointments.TestAppointmentID
+                            WHERE LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID 
+                            AND TestTypeID = @TestTypeID ; ";
+
+            SqlCommand Command = new SqlCommand(query, Connection);
+
+            Command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
+            Command.Parameters.AddWithValue("@TestTypeID", TestTypeID);
+
+            try {
+                Connection.Open();
+
+                object result = Command.ExecuteScalar();
+
+                if(result != null) {
+                    Trials = (byte)result;
+                }
+    
+            }
+            catch (Exception ex) {
+                //throw new Exception("Error in clsManagePeopleData.Find: " + ex.Message);
+                Trials = 0;
+
+            }
+            finally {
+                Connection.Close();
+            }
+
+            return Trials;
         }
     }
 }

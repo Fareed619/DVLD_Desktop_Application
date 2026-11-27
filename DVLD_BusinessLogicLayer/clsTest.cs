@@ -87,21 +87,20 @@ namespace DVLD_BusinessLogicLayer {
             return clsTestData.Delete(testID);
         }
 
+        static public byte TrialsCount(int localDrivingLicenseApplicationID, int testTypeID) {
+
+            return clsTestData.TrialsCount(localDrivingLicenseApplicationID, testTypeID);
+        }
 
 
 
         private bool _AddNewTest() {
 
-            this.TestAppointmentID = clsTestData.AddNewTest(_MapTestToDTO(this));
+            this.TestID = clsTestData.AddNewTest(_MapTestToDTO(this));
 
-            if (this.TestAppointmentID != -1) {
-                this._Mode = enMode.Update;
-                return true;
-            }
-            else {
-                return false;
-            }
+            return this.TestID != -1;
         }
+           
         private bool _UpdateTest() {
 
             return clsTestData.UpdateTest(_MapTestToDTO(this));
@@ -114,7 +113,14 @@ namespace DVLD_BusinessLogicLayer {
 
             switch (this._Mode) {
                 case enMode.AddNew:
-                    return _AddNewTest();
+                    if (_AddNewTest()) {
+                        this._Mode = enMode.Update;
+                        clsTestAppointment.SetAppointmentLocked(this.TestAppointmentID);
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
 
                 case enMode.Update:
                     return _UpdateTest();
