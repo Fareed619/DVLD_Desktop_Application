@@ -40,24 +40,32 @@ namespace DVLD_PresentationLayer.Applications.Controls {
             
         }
 
-        public void LoadInfoIntoCtrl(int LocalDrivingLicenseApplicationID, clsTestAppointment.enTestType TestType) {
+        public void LoadInfoIntoCtrl(int LocalDrivingLicenseApplicationID, clsTestAppointment.enTestType TestTypeID) {
 
             _TestAppointment = new clsTestAppointment();
-            _SetTestAppointmentDefaultValues( LocalDrivingLicenseApplicationID, TestType);
+            _SetTestAppointmentDefaultValues( LocalDrivingLicenseApplicationID, TestTypeID);
 
 
             clsLocalDrivingLicenseApplication LocalApplication = clsLocalDrivingLicenseApplication.FindByLocalDrivingLicenseID(LocalDrivingLicenseApplicationID);
             if (LocalApplication == null) return;
 
-            lblMain.Text = TestType.ToString();
+            lblMain.Text = TestTypeID.ToString();
             lblLDLAppID.Text = LocalApplication.LocalDrivingLicenseApplicationID.ToString();
             lblLClass.Text = LocalApplication.LicenseClass.ClassName;
             lblName.Text = LocalApplication.Applicant.FullName;
-            lblFees.Text = clsTestType.Find((clsTestType.enTestType)TestType).TestTypeFees.ToString();
+            lblFees.Text = clsTestType.Find((clsTestType.enTestType)TestTypeID).TestTypeFees.ToString();
 
-            //TODO 
-            lblTrial.Text = "0";
-            gbRetakeTestInfo.Enabled = false;
+            int Trials = clsTest.TrialsCount(LocalDrivingLicenseApplicationID, (int)TestTypeID);
+            lblTrial.Text = Trials.ToString();
+
+            _SetAppropriateImageAndTitle(TestTypeID);
+
+            if(Trials > 0) {
+
+            }
+            else {
+                gbRetakeTestInfo.Enabled = false;
+            }
 
 
         }
@@ -79,11 +87,21 @@ namespace DVLD_PresentationLayer.Applications.Controls {
             lblFees.Text = clsTestType.Find((clsTestType.enTestType)TestAppointment.TestTypeID).TestTypeFees.ToString();
             dateTimePicker1.Value = TestAppointment.AppointmentDate;
 
-            //TODO 
-            lblTrial.Text = "0";
-            gbRetakeTestInfo.Enabled = false;
+            int Trials = clsTest.TrialsCount(TestAppointment.LocalDrivingLicenseApplicationID, (int)TestAppointment.TestTypeID);
 
+            lblTrial.Text = Trials.ToString();
+
+            _SetAppropriateImageAndTitle(TestAppointment.TestTypeID);
+
+            if (Trials > 0) {
+                // Create a new application typr retake
+
+            }
+            else {
+                gbRetakeTestInfo.Enabled = false;
+            }
         }
+
 
 
         private void _SetTestAppointmentDefaultValues(int LocalDrivingLicenseApplicationID, clsTestAppointment.enTestType TestTypeID) {
@@ -92,6 +110,26 @@ namespace DVLD_PresentationLayer.Applications.Controls {
             _TestAppointment.PaidFees = clsTestType.Find((clsTestType.enTestType)TestTypeID).TestTypeFees;
             _TestAppointment.CreatedByUserID = clsGlobal.CurrentUser.User.UserID;
 
+        }
+
+        private void _SetAppropriateImageAndTitle(clsTestAppointment.enTestType TestTypeID) {
+
+            switch (TestTypeID) {
+                case clsTestAppointment.enTestType.VisionTest:
+                    picBMain.Image = Properties.Resources.Vision_512;
+                    gbSechduleTest.Text = "Vision Test";
+                    break;
+
+                case clsTestAppointment.enTestType.WrittenTest:
+                    picBMain.Image = Properties.Resources.Written_Test_512;
+                    gbSechduleTest.Text = "Written Test";
+                    break;
+
+                case clsTestAppointment.enTestType.StreetTest:
+                    picBMain.Image = Properties.Resources.Street_Test_32;
+                    gbSechduleTest.Text = "Street Test";
+                    break;
+            }
         }
 
 

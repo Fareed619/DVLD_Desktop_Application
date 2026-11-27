@@ -127,5 +127,13 @@ namespace DVLD_PresentationLayer.Tests.Test_Appointments {
             _LoadTestAppointmentsIntoDGV();
         }
 
+        private void takeTestToolStripMenuItem_Click(object sender, EventArgs e) {
+            int testAppointmentID = (int)dgvTestAppointment.CurrentRow.Cells["TestAppointmentID"].Value;
+
+            frmTakeTest frm = new frmTakeTest(testAppointmentID);
+            frm.ShowDialog();
+            _LoadTestAppointmentsIntoDGV();
+        }
+
     }
 }

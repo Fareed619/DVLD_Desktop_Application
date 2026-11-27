@@ -428,7 +428,7 @@
             this.lblMain.AutoSize = true;
             this.lblMain.Font = new System.Drawing.Font("Microsoft Sans Serif", 25.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMain.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lblMain.Location = new System.Drawing.Point(130, 88);
+            this.lblMain.Location = new System.Drawing.Point(143, 88);
             this.lblMain.Name = "lblMain";
             this.lblMain.Size = new System.Drawing.Size(323, 51);
             this.lblMain.TabIndex = 31;

@@ -144,7 +144,7 @@
             this.toolStripSeparator3,
             this.scheduleTestToolStripMenuItem});
             this.cmsLocalDrivingLicense.Name = "cmsLocalDrivingLicense";
-            this.cmsLocalDrivingLicense.Size = new System.Drawing.Size(305, 249);
+            this.cmsLocalDrivingLicense.Size = new System.Drawing.Size(305, 221);
             // 
             // showApplicationDetailsToolStripMenuItem
             // 
@@ -227,7 +227,7 @@
             this.visionTestToolStripMenuItem.Image = global::DVLD_PresentationLayer.Properties.Resources.Vision_Test_32;
             this.visionTestToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.visionTestToolStripMenuItem.Name = "visionTestToolStripMenuItem";
-            this.visionTestToolStripMenuItem.Size = new System.Drawing.Size(236, 38);
+            this.visionTestToolStripMenuItem.Size = new System.Drawing.Size(212, 38);
             this.visionTestToolStripMenuItem.Text = "Vision Test";
             this.visionTestToolStripMenuItem.Click += new System.EventHandler(this.visionTestToolStripMenuItem_Click);
             // 
@@ -236,7 +236,7 @@
             this.writtenTestToolStripMenuItem.Image = global::DVLD_PresentationLayer.Properties.Resources.Written_Test_32;
             this.writtenTestToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.writtenTestToolStripMenuItem.Name = "writtenTestToolStripMenuItem";
-            this.writtenTestToolStripMenuItem.Size = new System.Drawing.Size(236, 38);
+            this.writtenTestToolStripMenuItem.Size = new System.Drawing.Size(212, 38);
             this.writtenTestToolStripMenuItem.Text = "Written Test";
             this.writtenTestToolStripMenuItem.Click += new System.EventHandler(this.writtenTestToolStripMenuItem_Click);
             // 
@@ -245,7 +245,7 @@
             this.streetTestToolStripMenuItem.Image = global::DVLD_PresentationLayer.Properties.Resources.Street_Test_32;
             this.streetTestToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.streetTestToolStripMenuItem.Name = "streetTestToolStripMenuItem";
-            this.streetTestToolStripMenuItem.Size = new System.Drawing.Size(236, 38);
+            this.streetTestToolStripMenuItem.Size = new System.Drawing.Size(212, 38);
             this.streetTestToolStripMenuItem.Text = "Street Test";
             this.streetTestToolStripMenuItem.Click += new System.EventHandler(this.streetTestToolStripMenuItem_Click);
             // 
