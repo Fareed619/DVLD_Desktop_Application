@@ -27,7 +27,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.ctrlShowApplicationInfo1 = new DVLD_PresentationLayer.Applications.Controls.ctrlShowApplicationInfo();
             this.picBMain = new System.Windows.Forms.PictureBox();
             this.lblMain = new System.Windows.Forms.Label();
             this.dgvTestAppointment = new System.Windows.Forms.DataGridView();
@@ -38,6 +37,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnAddAppointment = new System.Windows.Forms.Button();
+            this.ctrlShowApplicationInfo1 = new DVLD_PresentationLayer.Applications.Controls.ctrlShowApplicationInfo();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBMain)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTestAppointment)).BeginInit();
@@ -55,13 +55,6 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1048, 550);
             this.panel2.TabIndex = 30;
-            // 
-            // ctrlShowApplicationInfo1
-            // 
-            this.ctrlShowApplicationInfo1.Location = new System.Drawing.Point(12, 160);
-            this.ctrlShowApplicationInfo1.Name = "ctrlShowApplicationInfo1";
-            this.ctrlShowApplicationInfo1.Size = new System.Drawing.Size(1014, 387);
-            this.ctrlShowApplicationInfo1.TabIndex = 31;
             // 
             // picBMain
             // 
@@ -114,6 +107,7 @@
             this.dgvTestAppointment.Size = new System.Drawing.Size(977, 220);
             this.dgvTestAppointment.TabIndex = 31;
             this.dgvTestAppointment.DataSourceChanged += new System.EventHandler(this.dgvTestAppointment_DataSourceChanged);
+            this.dgvTestAppointment.SelectionChanged += new System.EventHandler(this.dgvTestAppointment_SelectionChanged);
             // 
             // contextMenuStrip1
             // 
@@ -194,6 +188,13 @@
             this.btnAddAppointment.TabIndex = 32;
             this.btnAddAppointment.UseVisualStyleBackColor = true;
             this.btnAddAppointment.Click += new System.EventHandler(this.btnAddAppointment_Click);
+            // 
+            // ctrlShowApplicationInfo1
+            // 
+            this.ctrlShowApplicationInfo1.Location = new System.Drawing.Point(12, 160);
+            this.ctrlShowApplicationInfo1.Name = "ctrlShowApplicationInfo1";
+            this.ctrlShowApplicationInfo1.Size = new System.Drawing.Size(1014, 387);
+            this.ctrlShowApplicationInfo1.TabIndex = 31;
             // 
             // frmTestAppointments
             // 

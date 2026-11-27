@@ -92,7 +92,10 @@ namespace DVLD_BusinessLogicLayer {
             return clsTestData.TrialsCount(localDrivingLicenseApplicationID, testTypeID);
         }
 
+        static  public byte PassedTestsCount(int localDrivingLicenseApplicationID) {
 
+            return clsTestData.PassedTestsCount(localDrivingLicenseApplicationID);
+        }
 
         private bool _AddNewTest() {
 

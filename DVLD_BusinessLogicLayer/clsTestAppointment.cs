@@ -101,9 +101,9 @@ namespace DVLD_BusinessLogicLayer {
         }
 
 
-        static public DataTable ListTestAppointments(int localDrivingLicenseApplicationID) {
+        static public DataTable ListTestAppointments(int localDrivingLicenseApplicationID, enTestType TestTypeID) {
 
-            return clsTestAppointmentsData.ListTestAppointments(localDrivingLicenseApplicationID);
+            return clsTestAppointmentsData.ListTestAppointments(localDrivingLicenseApplicationID, (int)TestTypeID);
         }
 
         static public clsTestAppointment Find(int testAppointmentID) {
@@ -132,9 +132,9 @@ namespace DVLD_BusinessLogicLayer {
             }
         }
 
-        //static public bool IsTestCompleted(int localDrivingLicenseApplicationID, clsTestAppointment.enTestType testTypeID) {
-        //    return clsTestAppointmentsData.IsTestCompleted(localDrivingLicenseApplicationID, (int)testTypeID);
-        //}
+        static public bool IsTestCompleted(int localDrivingLicenseApplicationID, clsTestAppointment.enTestType testTypeID) {
+            return clsTestAppointmentsData.IsTestCompleted(localDrivingLicenseApplicationID, (int)testTypeID);
+        }
 
         static public bool IsVisionTestCompleted(int localDrivingLicenseApplicationID) {
 

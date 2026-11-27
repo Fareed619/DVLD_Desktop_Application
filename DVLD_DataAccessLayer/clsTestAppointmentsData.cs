@@ -36,7 +36,7 @@ namespace DVLD_DataAccessLayer {
             );
         }
 
-        static public DataTable ListTestAppointments(int LocalDrivingLicenseApplicationID) {
+        static public DataTable ListTestAppointments(int LocalDrivingLicenseApplicationID, int TestTypeID) {
 
             DataTable TestAppointments = new DataTable();
 
@@ -45,11 +45,13 @@ namespace DVLD_DataAccessLayer {
             string query = @"SELECT  
                             TestAppointmentID, AppointmentDate, PaidFees, IsLocked
                             FROM TestAppointments
-                            WHERE LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID ; ";
+                            WHERE LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID
+                            AND TestTypeID = @TestTypeID; ";
 
             SqlCommand Command = new SqlCommand(query, Connection);
 
             Command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
+            Command.Parameters.AddWithValue("@TestTypeID", TestTypeID);
 
             try {
                 Connection.Open();

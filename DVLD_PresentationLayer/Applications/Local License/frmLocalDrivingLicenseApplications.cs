@@ -247,17 +247,34 @@ namespace DVLD_PresentationLayer.Applications.Local_License {
                 if(ApplicationStatus != "NEW") {
                     cancelToolStripMenuItem.Enabled = false;
                     scheduleTestToolStripMenuItem.Enabled = false;
+                    issueDrivingLicenseFirstTimeToolStripMenuItem1.Enabled = false;
+
+                }
+                else { 
+                    // status = new
+                    cancelToolStripMenuItem.Enabled = true;
+
+                    if (clsTest.PassedTestsCount((int)dgvLocalApplications.CurrentRow.Cells["LocalDrivingLicenseApplicationID"].Value) >= 3) {
+                        issueDrivingLicenseFirstTimeToolStripMenuItem1.Enabled = true;
+                        scheduleTestToolStripMenuItem.Enabled = false;
+                    }
+                    else {
+                        issueDrivingLicenseFirstTimeToolStripMenuItem1.Enabled = false;
+                        scheduleTestToolStripMenuItem.Enabled = true;
+
+
+                        // Control which test type to show
+                        _ShowAllowedTests((int)dgvLocalApplications.CurrentRow.Cells["LocalDrivingLicenseApplicationID"].Value);
+                    }
+
+                }
+
+                if(ApplicationStatus == "COMPLETED") {
+                    showApplicationDetailsToolStripMenuItem.Enabled = true;
                 }
                 else {
-                    cancelToolStripMenuItem.Enabled = true;
-                    scheduleTestToolStripMenuItem.Enabled = true;
-
+                    showApplicationDetailsToolStripMenuItem.Enabled = false;
                 }
-
-
-                // Control which test type to show
-                _ShowAllowedTests((int)dgvLocalApplications.CurrentRow.Cells["LocalDrivingLicenseApplicationID"].Value);
-
 
             }
             
@@ -287,6 +304,11 @@ namespace DVLD_PresentationLayer.Applications.Local_License {
 
         }
 
+        private void _OnDataUpdated() {
+            _LoadLocalDrivingLicesneListIntoDGV();
+            _RefreshFilter();
+        }
+
         private void editApplicationToolStripMenuItem_Click(object sender, EventArgs e) {
             frmAddUpdateLocalDrivingLicense frm = new frmAddUpdateLocalDrivingLicense((int)dgvLocalApplications.CurrentRow.Cells["LocalDrivingLicenseApplicationID"].Value);
 
@@ -296,18 +318,23 @@ namespace DVLD_PresentationLayer.Applications.Local_License {
         }
 
         private void visionTestToolStripMenuItem_Click(object sender, EventArgs e) {
-            frmTestAppointments frm = new frmTestAppointments(clsTestType.enTestType.VisionTest, (int)dgvLocalApplications.CurrentRow.Cells["LocalDrivingLicenseApplicationID"].Value);
+            frmTestAppointments frm = new frmTestAppointments(clsTestAppointment.enTestType.VisionTest, (int)dgvLocalApplications.CurrentRow.Cells["LocalDrivingLicenseApplicationID"].Value);
+            frm.DataChanged += _OnDataUpdated;
             frm.ShowDialog();
         }
 
         private void writtenTestToolStripMenuItem_Click(object sender, EventArgs e) {
-            frmTestAppointments frm = new frmTestAppointments(clsTestType.enTestType.WrittenTest, (int)dgvLocalApplications.CurrentRow.Cells["LocalDrivingLicenseApplicationID"].Value);
+            frmTestAppointments frm = new frmTestAppointments(clsTestAppointment.enTestType.WrittenTest, (int)dgvLocalApplications.CurrentRow.Cells["LocalDrivingLicenseApplicationID"].Value);
+            frm.DataChanged += _OnDataUpdated;
             frm.ShowDialog();
         }
 
         private void streetTestToolStripMenuItem_Click(object sender, EventArgs e) {
-            frmTestAppointments frm = new frmTestAppointments(clsTestType.enTestType.StreetTest, (int)dgvLocalApplications.CurrentRow.Cells["LocalDrivingLicenseApplicationID"].Value);
+            frmTestAppointments frm = new frmTestAppointments(clsTestAppointment.enTestType.StreetTest, (int)dgvLocalApplications.CurrentRow.Cells["LocalDrivingLicenseApplicationID"].Value);
+            frm.DataChanged += _OnDataUpdated;
             frm.ShowDialog();
         }
+
+
     }
 }

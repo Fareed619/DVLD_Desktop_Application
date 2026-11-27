@@ -12,7 +12,12 @@ using System.Windows.Forms;
 namespace DVLD_PresentationLayer.Tests.Test_Appointments {
     public partial class frmTestAppointments : Form {
 
-        private clsTestType.enTestType _TestType = clsTestType.enTestType.VisionTest;
+        public event Action DataChanged;
+        private void _OnDataChanged() {
+            DataChanged?.Invoke();
+        }
+
+        private clsTestAppointment.enTestType _TestType = clsTestAppointment.enTestType.VisionTest;
         private int _LocalDrivingLicenseApplicationID = -1;
         private int _RecordsCount {
             get {
@@ -21,7 +26,7 @@ namespace DVLD_PresentationLayer.Tests.Test_Appointments {
         }
 
 
-        public frmTestAppointments(clsTestType.enTestType testType, int localDrivingLicenseApplicationID) {
+        public frmTestAppointments(clsTestAppointment.enTestType testType, int localDrivingLicenseApplicationID) {
             InitializeComponent();
 
             _TestType = testType;
@@ -41,18 +46,18 @@ namespace DVLD_PresentationLayer.Tests.Test_Appointments {
 
             switch (_TestType) {
 
-                case clsTestType.enTestType.VisionTest:
+                case clsTestAppointment.enTestType.VisionTest:
                     lblMain.Text = "Vision Test Appointment";
                     picBMain.Image = Properties.Resources.Vision_512;
 
                     break;
 
-                case clsTestType.enTestType.WrittenTest:
+                case clsTestAppointment.enTestType.WrittenTest:
                     lblMain.Text = "Written Test Appointment";
                     picBMain.Image = Properties.Resources.Written_Test_512;
                     break;
 
-                case clsTestType.enTestType.StreetTest:
+                case clsTestAppointment.enTestType.StreetTest:
                     lblMain.Text = "Street Test Appointment";
                     picBMain.Image = Properties.Resources.Street_Test_32;
                     break;
@@ -63,9 +68,14 @@ namespace DVLD_PresentationLayer.Tests.Test_Appointments {
             }
 
         }
+
+        private void _RefreshAllData() {
+            ctrlShowApplicationInfo1.LoadApplicationInfoByLocalDrivingLicenseApplicaton(_LocalDrivingLicenseApplicationID);
+            _LoadTestAppointmentsIntoDGV();
+        }
         private void _LoadTestAppointmentsIntoDGV() {
 
-            dgvTestAppointment.DataSource = clsTestAppointment.ListTestAppointments(this._LocalDrivingLicenseApplicationID);
+            dgvTestAppointment.DataSource = clsTestAppointment.ListTestAppointments(this._LocalDrivingLicenseApplicationID, _TestType);
         }
         private void _SetDGVSettings() {
 
@@ -90,6 +100,14 @@ namespace DVLD_PresentationLayer.Tests.Test_Appointments {
 
             }
         }
+        private void _OnTestAppointmentScheduled() {
+            _OnDataChanged();
+            _RefreshAllData();
+        }
+        private void _OnTestCompleted() {
+            _OnDataChanged();
+            _RefreshAllData();
+        }
 
 
         private void btnClose_Click(object sender, EventArgs e) {
@@ -99,17 +117,40 @@ namespace DVLD_PresentationLayer.Tests.Test_Appointments {
             lblRecords.Text = $"#Records: {_RecordsCount}";
         }
 
+        private void dgvTestAppointment_SelectionChanged(object sender, EventArgs e) {
+
+            if (dgvTestAppointment.SelectedRows.Count > 0) {
+                bool ISLocked = (bool)dgvTestAppointment.CurrentRow.Cells["IsLocked"].Value;
+
+                if (ISLocked) {
+                    takeTestToolStripMenuItem.Enabled = false;
+                }
+                else {
+                    takeTestToolStripMenuItem.Enabled = true;
+
+                }
+
+            }
+        }
+
+
         private void btnAddAppointment_Click(object sender, EventArgs e) {
 
             // Check if this user has already an active appointment
             if (clsTestAppointment.DoesLocalApplicationHaveActiveAppointment(_LocalDrivingLicenseApplicationID) != null) {
-                MessageBox.Show("This Person already has an active test appointment", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show($"This Person already has an active {_TestType.ToString()}  Appointment", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;  
             }
 
+            // Check also if user passed this test 
+            if(clsTestAppointment.IsTestCompleted(_LocalDrivingLicenseApplicationID, _TestType)) {
+                MessageBox.Show($"This Person already passed {_TestType.ToString()} ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
-            frmScheduleTest frm = new frmScheduleTest((clsTestAppointment.enTestType)_TestType, _LocalDrivingLicenseApplicationID);
-            frm.TestAppointmentSaved += _OnTestAppointmentSaved;
+
+            frmScheduleTest frm = new frmScheduleTest(_TestType, _LocalDrivingLicenseApplicationID);
+            frm.TestAppointmentSaved += _OnTestAppointmentScheduled;
             frm.ShowDialog();
 
         }
@@ -118,22 +159,21 @@ namespace DVLD_PresentationLayer.Tests.Test_Appointments {
             int testAppointmentID = (int)dgvTestAppointment.CurrentRow.Cells["TestAppointmentID"].Value;
 
             frmScheduleTest frm = new frmScheduleTest(testAppointmentID);
-            frm.TestAppointmentSaved += _OnTestAppointmentSaved;
+            frm.TestAppointmentSaved += _OnTestAppointmentScheduled;
             frm.ShowDialog();
 
-        }
-
-        private void _OnTestAppointmentSaved() {
-            _LoadTestAppointmentsIntoDGV();
         }
 
         private void takeTestToolStripMenuItem_Click(object sender, EventArgs e) {
+
             int testAppointmentID = (int)dgvTestAppointment.CurrentRow.Cells["TestAppointmentID"].Value;
 
             frmTakeTest frm = new frmTakeTest(testAppointmentID);
+            frm.TestCompleted += _OnTestCompleted;
             frm.ShowDialog();
-            _LoadTestAppointmentsIntoDGV();
+           
         }
 
+       
     }
 }

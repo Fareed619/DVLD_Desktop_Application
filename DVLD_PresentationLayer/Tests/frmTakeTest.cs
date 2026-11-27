@@ -12,10 +12,17 @@ using System.Windows.Forms;
 namespace DVLD_PresentationLayer.Tests {
     public partial class frmTakeTest : Form {
 
+        public event Action TestCompleted;
+
+        private void OnTestCompleted() {
+            TestCompleted?.Invoke();
+        }
+
+
         private int _TestAppointmentID = -1;
         private clsTestAppointment _TestAppointment;
-
         private clsTest _Test;
+
 
         
         public frmTakeTest(int TestAppointmentID) {
@@ -93,8 +100,10 @@ namespace DVLD_PresentationLayer.Tests {
             _Test.CreatedByUserID = clsGlobal.CurrentUser.User.UserID;
 
             if (_Test.Save()) {
+                OnTestCompleted();
                 lblTestID.Text = _Test.TestID.ToString();
                 MessageBox.Show("Test Added Successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Close();
                 return;
             }
             else {

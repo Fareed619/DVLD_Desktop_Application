@@ -43,7 +43,9 @@ namespace DVLD_PresentationLayer.Applications.Controls {
 
             lblLDLAppID.Text = _LocalDrivingLicenseApplication.LocalDrivingLicenseApplicationID.ToString();
             lblLicenseCLass.Text = _LocalDrivingLicenseApplication.LicenseClass.ClassName;
-            lblPassedTests.Text = $"{0}/3";
+
+            byte PassedTestsCount = clsTest.PassedTestsCount(_LocalDrivingLicenseApplication.LocalDrivingLicenseApplicationID);
+            lblPassedTests.Text = $"{PassedTestsCount}/3";
 
             lblID.Text = _LocalDrivingLicenseApplication.ApplicationID.ToString();
             lblStatus.Text = _LocalDrivingLicenseApplication.ApplicationStatusText;

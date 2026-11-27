@@ -21,6 +21,9 @@ namespace DVLD_PresentationLayer.Applications.Controls {
 
         private clsTestAppointment _TestAppointment;
 
+        private clsApplication _RetakeApplication = null;
+
+
         public bool RetakeApplicationEnabled {
             get {
                return gbRetakeTestInfo.Enabled;
@@ -36,79 +39,122 @@ namespace DVLD_PresentationLayer.Applications.Controls {
         }
 
         private void ctrlScheduleTest_Load(object sender, EventArgs e) {
-            //dateTimePicker1.MinDate = DateTime.Now;
-            
+            dateTimePicker1.MinDate = DateTime.Now;
+
         }
 
+
+        // AddNew Test Appointment
         public void LoadInfoIntoCtrl(int LocalDrivingLicenseApplicationID, clsTestAppointment.enTestType TestTypeID) {
 
+            clsLocalDrivingLicenseApplication LocalDrivingLicenseApplication = clsLocalDrivingLicenseApplication.FindByLocalDrivingLicenseID(LocalDrivingLicenseApplicationID);
+            if (LocalDrivingLicenseApplication == null) {
+                MessageBox.Show("Local Driving Licesnse ID is missing", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _SetDefaultValues();
+                return;
+            };
+            
+
             _TestAppointment = new clsTestAppointment();
-            _SetTestAppointmentDefaultValues( LocalDrivingLicenseApplicationID, TestTypeID);
+            _SetNewTestAppointmentValues(LocalDrivingLicenseApplication, TestTypeID);
+            _FillControlsFromTestAppointmentInfo();
 
 
-            clsLocalDrivingLicenseApplication LocalApplication = clsLocalDrivingLicenseApplication.FindByLocalDrivingLicenseID(LocalDrivingLicenseApplicationID);
-            if (LocalApplication == null) return;
 
-            lblMain.Text = TestTypeID.ToString();
-            lblLDLAppID.Text = LocalApplication.LocalDrivingLicenseApplicationID.ToString();
-            lblLClass.Text = LocalApplication.LicenseClass.ClassName;
-            lblName.Text = LocalApplication.Applicant.FullName;
-            lblFees.Text = clsTestType.Find((clsTestType.enTestType)TestTypeID).TestTypeFees.ToString();
-
-            int Trials = clsTest.TrialsCount(LocalDrivingLicenseApplicationID, (int)TestTypeID);
+            byte Trials = clsTest.TrialsCount(_TestAppointment.LocalDrivingLicenseApplicationID, (int)_TestAppointment.TestTypeID);
             lblTrial.Text = Trials.ToString();
 
-            _SetAppropriateImageAndTitle(TestTypeID);
 
-            if(Trials > 0) {
+            if (Trials > 0) {
+                gbRetakeTestInfo.Enabled = true;
+                _RetakeApplication = new clsApplication();
+                _PraperRetakeApplicationInfo();
+
+                lblRAppFees.Text = _RetakeApplication.PaidFees.ToString();
+                lblRTotalFees.Text = (_RetakeApplication.PaidFees + _TestAppointment.PaidFees).ToString();
 
             }
             else {
                 gbRetakeTestInfo.Enabled = false;
             }
 
-
         }
 
+
+        // Update Test Appointment
         public void LoadInfoIntoCtrl(int TestAppointmentID) {
 
             clsTestAppointment TestAppointment = clsTestAppointment.Find(TestAppointmentID);
 
-            if (TestAppointment == null) return;
+            if (TestAppointment == null) {
+                MessageBox.Show("Test Appointment is missing", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _SetDefaultValues();
+                return;
+            }
 
             _TestAppointment = TestAppointment;
+            _FillControlsFromTestAppointmentInfo();
 
-            lblMain.Text = TestAppointment.TestType.TestTypeTitle;
 
-            lblLDLAppID.Text = TestAppointment.LocalDrivingLicenseApplicationID.ToString();
-
-            lblLClass.Text = TestAppointment.LocalDrivingLicenseApplication.LicenseClass.ClassName;
-            lblName.Text = TestAppointment.LocalDrivingLicenseApplication.Applicant.FullName;
-            lblFees.Text = clsTestType.Find((clsTestType.enTestType)TestAppointment.TestTypeID).TestTypeFees.ToString();
-            dateTimePicker1.Value = TestAppointment.AppointmentDate;
-
-            int Trials = clsTest.TrialsCount(TestAppointment.LocalDrivingLicenseApplicationID, (int)TestAppointment.TestTypeID);
-
+            byte Trials = clsTest.TrialsCount(_TestAppointment.LocalDrivingLicenseApplicationID, (int)_TestAppointment.TestTypeID);
             lblTrial.Text = Trials.ToString();
 
-            _SetAppropriateImageAndTitle(TestAppointment.TestTypeID);
 
-            if (Trials > 0) {
-                // Create a new application typr retake
+
+            if (_TestAppointment.RetakeTestApplicationID != -1) { // There is an application linked with it
+
+                gbRetakeTestInfo.Enabled = true;
+                _RetakeApplication = _TestAppointment.RetakeTestApplication;
+
+                lblRAppFees.Text = _RetakeApplication.PaidFees.ToString();
+                lblRTotalFees.Text = (_RetakeApplication.PaidFees + _TestAppointment.PaidFees).ToString();
 
             }
             else {
                 gbRetakeTestInfo.Enabled = false;
             }
+
+        }
+               
+
+
+
+
+        private void _FillControlsFromTestAppointmentInfo() {
+
+            _SetAppropriateImageAndTitle(_TestAppointment.TestTypeID);
+
+            lblMain.Text = _TestAppointment.TestType.TestTypeTitle;
+            lblLDLAppID.Text = _TestAppointment.LocalDrivingLicenseApplicationID.ToString();
+            lblLClass.Text = _TestAppointment.LocalDrivingLicenseApplication.LicenseClass.ClassName;
+            lblName.Text = _TestAppointment.LocalDrivingLicenseApplication.Applicant.FullName;
+            lblFees.Text = _TestAppointment.TestType.TestTypeFees.ToString();
+            dateTimePicker1.Value = _TestAppointment.AppointmentDate;
+
+
         }
 
+        private void _SetDefaultValues() {
+            lblMain.Text = "???";
+            lblLDLAppID.Text = "???";
+            lblLClass.Text = "???";
+            lblName.Text = "???";
+            lblFees.Text = "???";
+            dateTimePicker1.Value = DateTime.Now;
+            gbRetakeTestInfo.Enabled = false;
 
+        }
 
-        private void _SetTestAppointmentDefaultValues(int LocalDrivingLicenseApplicationID, clsTestAppointment.enTestType TestTypeID) {
-            _TestAppointment.LocalDrivingLicenseApplicationID = LocalDrivingLicenseApplicationID;
+        private void _SetNewTestAppointmentValues(clsLocalDrivingLicenseApplication LocalDrivingLicenseApplication, clsTestAppointment.enTestType TestTypeID) {
+
+            _TestAppointment.LocalDrivingLicenseApplication = LocalDrivingLicenseApplication;
+            _TestAppointment.LocalDrivingLicenseApplicationID = LocalDrivingLicenseApplication.LocalDrivingLicenseApplicationID;
             _TestAppointment.TestTypeID = TestTypeID;
-            _TestAppointment.PaidFees = clsTestType.Find((clsTestType.enTestType)TestTypeID).TestTypeFees;
+            _TestAppointment.TestType = clsTestType.Find((clsTestType.enTestType)TestTypeID);
+            _TestAppointment.PaidFees = _TestAppointment.TestType.TestTypeFees;
             _TestAppointment.CreatedByUserID = clsGlobal.CurrentUser.User.UserID;
+            _TestAppointment.AppointmentDate = DateTime.Now;
+            _TestAppointment.IsLocked = false;
 
         }
 
@@ -132,12 +178,34 @@ namespace DVLD_PresentationLayer.Applications.Controls {
             }
         }
 
+        private void _PraperRetakeApplicationInfo() {
+            _RetakeApplication.ApplicationTypeID = clsApplication.enApplicationType.RetakeTest;
+            _RetakeApplication.ApplicationDate = DateTime.Now;
+            _RetakeApplication.ApplicationStatus = clsApplication.enAppStatus.Completed;
+            _RetakeApplication.ApplicantPersonID = clsLocalDrivingLicenseApplication.FindByLocalDrivingLicenseID(_TestAppointment.LocalDrivingLicenseApplicationID).ApplicantPersonID;
+
+            _RetakeApplication.LastStatusDate = DateTime.Now;
+            _RetakeApplication.CreatedByUserID = _TestAppointment.CreatedByUserID;
+            _RetakeApplication.PaidFees = clsApplicationType.Find((int)_RetakeApplication.ApplicationTypeID).ApplicationTypeFees;
+
+        }
 
         private void btnSave_Click(object sender, EventArgs e) {
+           
+
+            if(_RetakeApplication != null) {
+
+                if (!_RetakeApplication.SaveApplication()) {
+                    MessageBox.Show("Retake Application Failed", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                lblRAppID.Text = _RetakeApplication.ApplicationID.ToString();
+                _TestAppointment.RetakeTestApplicationID = _RetakeApplication.ApplicationID;
+            }
 
             _TestAppointment.AppointmentDate = dateTimePicker1.Value;
-            _TestAppointment.IsLocked = false;
-
+          
 
             if (_TestAppointment.Save()) {
                 OnTestAppointmentSaved();

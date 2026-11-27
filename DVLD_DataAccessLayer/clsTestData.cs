@@ -179,7 +179,7 @@ namespace DVLD_DataAccessLayer {
 
             SqlConnection Connection = new SqlConnection(clsSettings.ConnectionString);
 
-            string query = @"SELECT * 
+            string query = @"SELECT COUNT(*) 
                             FROM Tests
                             INNER JOIN TestAppointments
 	                            ON Tests.TestAppointmentID = TestAppointments.TestAppointmentID
@@ -197,7 +197,7 @@ namespace DVLD_DataAccessLayer {
                 object result = Command.ExecuteScalar();
 
                 if(result != null) {
-                    Trials = (byte)result;
+                    Trials = Convert.ToByte(result);
                 }
     
             }
@@ -211,6 +211,44 @@ namespace DVLD_DataAccessLayer {
             }
 
             return Trials;
+        }
+
+        static public byte PassedTestsCount(int LocalDrivingLicenseApplicationID) {
+            byte passedTests = 0;
+
+            SqlConnection Connection = new SqlConnection(clsSettings.ConnectionString);
+
+            string query = @"SELECT COUNT(*) 
+                            FROM Tests
+                            INNER JOIN TestAppointments
+	                            ON Tests.TestAppointmentID = TestAppointments.TestAppointmentID
+                            WHERE LocalDrivingLicenseApplicationID = @LocalDrivingLicenseApplicationID AND
+                            TestResult = 1 ;";
+
+            SqlCommand Command = new SqlCommand(query, Connection);
+
+            Command.Parameters.AddWithValue("@LocalDrivingLicenseApplicationID", LocalDrivingLicenseApplicationID);
+
+            try {
+                Connection.Open();
+
+                object result = Command.ExecuteScalar();
+
+                if(result != null) {
+                    passedTests = Convert.ToByte(result);
+                }
+    
+            }
+            catch (Exception ex) {
+                //throw new Exception("Error in clsManagePeopleData.Find: " + ex.Message);
+                passedTests = 0;
+
+            }
+            finally {
+                Connection.Close();
+            }
+
+            return passedTests;
         }
     }
 }

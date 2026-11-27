@@ -22,18 +22,20 @@ namespace DVLD_PresentationLayer.Tests.Test_Appointments {
         enum enMode { AddNew = 1, Update = 2}
 
         enMode _Mode = enMode.AddNew;
-        clsTestAppointment.enTestType _TestType;
+        clsTestAppointment.enTestType _TestTypeID;
         private int _LocalDrivingLicenseApplicationID = -1;
         private int _TestAppointmentID = -1;
 
 
-        public frmScheduleTest(clsTestAppointment.enTestType testType, int localDrivingLicenseApplicationID) {
+        // AddNew Test Appointment
+        public frmScheduleTest(clsTestAppointment.enTestType testTypeID, int localDrivingLicenseApplicationID) {
             InitializeComponent();
-            _TestType = testType;
+            _TestTypeID = testTypeID;
             _LocalDrivingLicenseApplicationID = localDrivingLicenseApplicationID;
             _Mode = enMode.AddNew;
         }
 
+        // Update Test Appointment
         public frmScheduleTest(int testAppointmentID) {
             InitializeComponent();
             _TestAppointmentID = testAppointmentID;
@@ -45,7 +47,7 @@ namespace DVLD_PresentationLayer.Tests.Test_Appointments {
         private void frmScheduleTest_Load(object sender, EventArgs e) {
 
             if(_Mode == enMode.AddNew) {
-                ctrlScheduleTest1.LoadInfoIntoCtrl(_LocalDrivingLicenseApplicationID, _TestType);
+                ctrlScheduleTest1.LoadInfoIntoCtrl(_LocalDrivingLicenseApplicationID, _TestTypeID);
 
             }
             else {
@@ -55,6 +57,7 @@ namespace DVLD_PresentationLayer.Tests.Test_Appointments {
             ctrlScheduleTest1.TestAppointmentSaved += OnTestAppointmentSaved;
                 
         }
+
 
 
         public void OnTestAppointmentSaved() {
